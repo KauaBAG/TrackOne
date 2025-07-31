@@ -6,6 +6,10 @@
 #include "AlertaVelocidade.hpp"
 #include "AlertaBateria.hpp"
 #include "AlertaZona.hpp"
+#include "TipoComunicacao.hpp"
+#include "Satelital.hpp"
+#include "Gsm.hpp"
+#include "Rfid.hpp"
 
 #include <iostream>
 #include <string>
@@ -14,5 +18,5 @@
 using namespace std;
 
 void main() {
-
+    
 }
