@@ -3,8 +3,24 @@
 #include <iostream>
 #include <string> 
 
-class X {
+#include "TipoDeComunicaco.hpp"
+#include "Data.hpp"
+using namespace std;
+
+class Rastreador 
+{
+protected:
+    int id;
+    int tipo;
+    string marca;
+    string modelo;
+    TipoDeComunicacao *comunicacao;
+    Data ativacao;
+    vector<Alerta> alertas;
+
+    Rastreador(int id, int tipo, string marca, string modelo, TipoDeComunicacao* comunicacao,
+        EstadoDoRastreador estado, Data ativacao);
 public:
-    X();
+    virtual string getString();
 };
 
