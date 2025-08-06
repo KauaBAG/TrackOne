@@ -1,10 +1,15 @@
-#define GSM_HPP
+#pragma once
 
-#include <iostream>
-#include <string> 
+#include "TipoComunicacao.hpp"
 
-class X {
+enum Banda{_2G, _4G, _5G};
+
+class Gsm : TipoDeComunicacao
+{
+private:
+    Banda banda;
+    bool fallback;
 public:
-    X();
+    Gsm(Banda banda, bool fallback) : banda(banda), fallback(fallback), TipoDeComunicacao(0){}
 };
 

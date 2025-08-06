@@ -1,26 +1,27 @@
-#define RASTREADOR_HPP
+#pragma once
 
-#include <iostream>
 #include <string> 
+#include <vector>
 
-#include "TipoDeComunicaco.hpp"
 #include "Data.hpp"
-using namespace std;
+#include "Alerta.hpp"
+#include "TipoDeComunicacao.hpp"
+
+enum EstadoDoRastreador {ATIVO, INATIVO, MANUTENCAO, BLOQUEADO};
 
 class Rastreador 
 {
 protected:
     int id;
     int tipo;
-    string marca;
-    string modelo;
+    std::string marca;
+    std::string modelo;
     TipoDeComunicacao *comunicacao;
     Data ativacao;
-    vector<Alerta> alertas;
+    std::vector<Alerta> alertas;
 
-    Rastreador(int id, int tipo, string marca, string modelo, TipoDeComunicacao* comunicacao,
+    Rastreador(int id, int tipo, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
         EstadoDoRastreador estado, Data ativacao);
 public:
-    virtual string getString();
+    virtual std::string getString();
 };
-

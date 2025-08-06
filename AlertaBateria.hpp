@@ -1,10 +1,15 @@
-#define ALERTABATERIA_HPP
+#pragma once
+#include "Alerta.hpp"
+#include <string>
 
-#include <iostream>
-#include <string> 
-
-class X {
+class AlertaBateria : public Alerta 
+{
+private:
+    bool foiViolada;
+    bool foiDescarregada;
 public:
-    X();
+    AlertaBateria(int tipo, int subid, Data dataDeEmissao, std::string localizacao, 
+        bool foiViolada, bool foiDescarregada);
+    std::string getString();
 };
 

@@ -1,10 +1,12 @@
-#define SATELITAL_HPP
+#pragma once
 
-#include <iostream>
-#include <string> 
+#include "TipoDeComunicacao.hpp"
 
-class X {
+class Satelital : public TipoDeComunicacao
+{
+private:
+    int id;
 public:
-    X();
+    Satelital(int id) : TipoDeComunicacao(1){}
 };
 

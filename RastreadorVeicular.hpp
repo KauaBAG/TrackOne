@@ -1,0 +1,31 @@
+#pragma once
+
+#include "Rastreador.hpp"
+#include <string>
+
+enum TipoDePlaca{PATICULAR, ESPECIAL, COLECAO, DIPLOMATICO, OFICIAIS, COMERCIAIS};
+typedef struct Placa
+{
+    std::string identificador;
+    std::string localDeEmissao;
+    TipoDePlaca tipo;
+
+
+    Placa(std::string identificador, std::string localDeEmissao, TipoDePlaca tipo) 
+     : identificador(identificador), localDeEmissao(localDeEmissao), tipo(tipo){}
+} Placa;
+
+class RastreadorVeicular : public Rastreador
+{
+private:
+    std::string tipo;
+    std::string marcaDoCarro;
+    std::string modeloDoCarro;
+    Placa placa;
+    bool temCamera;
+public:
+    RastreadorVeicular(int id, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
+        EstadoDoRastreador estado, Data ativacao, std::string tipo, std::string marcaDoCarro, std::string modeloDoCarro, Placa placa, bool temCamera);
+    std::string getString();
+};
+

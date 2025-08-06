@@ -1,10 +1,13 @@
-#define ALERTAZONA_HPP
+#pragma once
+#include "Alerta.hpp"
+#include <string>
 
-#include <iostream>
-#include <string> 
-
-class X {
+class AlertaZona : public Alerta 
+{
+private:
+    bool inout;
+    std::string zona;
 public:
-    X();
+    AlertaZona(int tipo, int subid, Data dataDeEmissao, std::string localizacao, bool inout, std::string zona);
 };
 

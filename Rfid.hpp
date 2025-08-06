@@ -1,10 +1,14 @@
-#define RFID_HPP
+#pragma once
 
-#include <iostream>
-#include <string> 
+#include "TipoDeComunicacao.hpp"
+#include <string>
 
-class X {
+class Rfid : public TipoDeComunicacao
+{
+private:
+    float frequencia;
+    std::string tipo;
 public:
-    X();
+    Rfid(float frequencia, std::string tipo) : TipoDeComunicacao(2), frequencia(frequencia) {}
 };
 

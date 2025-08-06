@@ -1,10 +1,14 @@
-#define ALERTAVELOCIDADE_HPP
+#pragma once
+#include "Alerta.hpp"
+#include <string>
 
-#include <iostream>
-#include <string> 
-
-class X {
+class AlertaVelocidade : public Alerta {
+private:
+    float velocidadeExercida;
+    float velocidadeLimite;
 public:
-    X();
+    AlertaVelocidade(int tipo, int subid, Data dataDeEmissao, std::string localizacao,
+        float velocidadeExercida, float velocidadeLimite);
+    std::string getString();
 };
 
