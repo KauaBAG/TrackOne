@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TipoComunicacao.hpp"
+#include "TipoDeComunicacao.hpp"
 
 enum Banda{_2G, _4G, _5G};
 
@@ -11,5 +11,27 @@ private:
     bool fallback;
 public:
     Gsm(Banda banda, bool fallback) : banda(banda), fallback(fallback), TipoDeComunicacao(0){}
+    std::string toString(Banda b)
+    {
+        switch (banda) 
+        {
+            case (_2G):
+                return "2G";
+            case (_4G):
+                return "4G";
+            case (_5G):
+                return "5G";
+        }
+    }
+    std::string getString()
+    {
+        return "Comunicação GSM de banda " + toString(banda) + (fallback?" com fallback":" sem fallback");
+    }
+
+    Banda getBanda() {return banda;}
+    bool getFallback() {return fallback;}
+
+    void setBanda(Banda banda) {this->banda = banda;}
+    void setFallback(bool fallback) {this->fallback = fallback;}
 };
 
