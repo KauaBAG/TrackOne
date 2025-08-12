@@ -12,16 +12,37 @@ enum EstadoDoRastreador {ATIVO, INATIVO, MANUTENCAO, BLOQUEADO};
 class Rastreador 
 {
 protected:
-    int id;
-    int tipo;
-    std::string marca;
-    std::string modelo;
-    TipoDeComunicacao *comunicacao;
-    Data ativacao;
-    std::vector<Alerta> alertas;
+    unsigned int id;
+    short tipo = -1;
+    std::string marca = "";
+    std::string modelo = "";
+    TipoDeComunicacao *comunicacao = NULL;
+    EstadoDoRastreador estado;
+    Data ativacao = Data();
+    std::vector<Alerta> alertas = {};
 
     Rastreador(int id, int tipo, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
         EstadoDoRastreador estado, Data ativacao);
 public:
-    virtual std::string getString();
+    virtual std::string getString() = 0;
+
+    virtual ~Rastreador();
+
+    unsigned int getId();
+    std::string getTipo();
+    std::string getMarca();
+    std::string getModelo();
+
+    TipoDeComunicacao *getTipoDeComunicacao();
+    Data &getDataDeAtivacao();
+
+    void setId(unsigned int id);
+    void setMarca(std::string marca);
+    void setModelo(std::string modelo);
+
+    void updateAlerta(Alerta &alerta);
+    int searchAlerta(int subid);
+    void deleteAlerta(int subid);
+
+    std::string getAlertasList();
 };

@@ -20,3 +20,6 @@ using namespace std;
 void main() {
     
 }
+
+// TODO: Mudar IDs para short
+// TODO: Colocar valores iniciais para atributos
