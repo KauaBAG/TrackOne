@@ -6,14 +6,26 @@
 class Alerta 
 {
 protected:
-    unsigned int tipo;
-    unsigned int subid;
+    unsigned int tipo = -1;
+    unsigned int subid = -1;
     Data dataDeEmissao;
-    std::string localizacao;
+    std::string localizacao = "";
+
+    void setTipo(unsigned int tipo)
+    {
+        if(tipo > 2) throw std::runtime_error("Tipo inválido de comunicação: " + std::to_string(tipo) + 
+            " (Somente 0(Velocidade), 1(Bateria), 2(Zona) são aceitos)");
+        this->tipo = tipo;
+    }
 
 public:
-    Alerta(int tipo, int subid, Data dataDeEmissao, std::string localizacao)
-    : tipo(tipo), subid(subid), dataDeEmissao(dataDeEmissao), localizacao(localizacao) {}
+    Alerta(unsigned int tipo, unsigned int subid, Data dataDeEmissao, std::string localizacao)
+    {
+        setTipo(tipo);
+        setSubid(subid);
+        setDataDeEmissao(dataDeEmissao);
+        setLocalizacao(localizacao);
+    }
     
     virtual std::string getString() = 0;
     

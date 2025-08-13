@@ -4,11 +4,43 @@
 
 class AlertaVelocidade : public Alerta {
 private:
-    float velocidadeExercida;
-    float velocidadeLimite;
+    float velocidadeExercida = -1;
+    float velocidadeLimite = -1;
 public:
-    AlertaVelocidade(int tipo, int subid, Data dataDeEmissao, std::string localizacao,
-        float velocidadeExercida, float velocidadeLimite);
-    std::string getString();
+    AlertaVelocidade(int subid, Data dataDeEmissao, std::string localizacao,
+        float velocidadeExercida, float velocidadeLimite) 
+        : Alerta(0, subid, dataDeEmissao, localizacao)
+    {
+        setVelocidadeLimite(velocidadeLimite);
+        setVelocidadeExercida(velocidadeExercida);
+    }
+    std::string getString() 
+    {
+        return "Alerta de Velocidade: Velocidade exercida - " + std::to_string(velocidadeExercida) +
+        "Velocidade limite - " + std::to_string(velocidadeLimite);
+    }
+
+    float getVelocidadeExercida() {return velocidadeExercida;}
+    float getVelocidadeLimite() {return velocidadeLimite;}
+
+    void setVelocidadeExercida(float velocidadeExercida) 
+    {
+        if(velocidadeExercida < 0)
+        {
+            std::cerr<<"Atribuição de valor invalido de velocidade exercida bloqueada - valor: "<<
+                velocidadeExercida<<std::endl;
+        }
+        else this->velocidadeExercida = velocidadeExercida;
+    }
+    void setVelocidadeLimite(float velocidadeLimite) 
+    {
+
+        if(velocidadeLimite < 0)
+        {
+            std::cerr<<"Atribuição de valor invalido de velocidade limite bloqueada - valor: "<<
+                velocidadeLimite<<std::endl;
+        }
+        else this->velocidadeLimite = velocidadeLimite;
+    }
 };
 

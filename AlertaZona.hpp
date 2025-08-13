@@ -8,6 +8,23 @@ private:
     bool inout;
     std::string zona;
 public:
-    AlertaZona(int tipo, int subid, Data dataDeEmissao, std::string localizacao, bool inout, std::string zona);
+    AlertaZona(int tipo, int subid, Data dataDeEmissao, std::string localizacao, bool inout, std::string zona)
+    : Alerta(0, subid, dataDeEmissao, localizacao)
+    {
+        setInout(inout);
+        setZona(zona);
+    } 
+
+    std::string getString()
+    {
+        return (std::string)"Alerta de zona: Rastreador " + (inout?"entrou":"saiu") + " de " + zona;
+    }
+
+    bool getInout() {return inout;};
+    std::string getZona() {return zona;};
+
+    void setInout(bool inout) {this->inout = inout;}
+    void setZona(std::string zona) {this->zona = zona;}
+
 };
 
