@@ -1,10 +1,19 @@
 #include "Rastreador.hpp"
 #include "Alerta.hpp"
+#include <string>
 
 Rastreador::Rastreador(int id, int tipo, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
-    EstadoDoRastreador estado, Data ativacao) 
-    : id(id), tipo(tipo), marca(marca), modelo(modelo), comunicacao(comunicacao),
-    estado(estado), ativacao(ativacao) {}
+    EstadoDoRastreador estado, Data ativacao)
+{
+    setId(id);
+    setTipo(tipo);
+    setMarca(marca);
+    setModelo(modelo);
+    this->comunicacao = comunicacao;
+    setEstado(estado);
+    this->ativacao = ativacao;
+    resetAlertas();
+}
 
 Rastreador::~Rastreador() {delete comunicacao;}
 
@@ -19,13 +28,22 @@ std::string Rastreador::getTipo()
 }
 std::string Rastreador::getMarca() {return marca;}
 std::string Rastreador::getModelo() {return modelo;}
+EstadoDoRastreador Rastreador::getEstado() {return estado;}
+std::string Rastreador::getEstadoString() {return (std::string[]){"ATIVO", "INATIVO", "MANUTENCAO", "BLOQUEADO"}[estado];}
 
-TipoDeComunicacao *Rastreador::getTipoDeComunicacao(){return comunicacao;}
-Data &Rastreador::getDataDeAtivacao(){return ativacao;};
+TipoDeComunicacao *Rastreador::getTipoDeComunicacaoPtr(){return comunicacao;}
+Data &Rastreador::getDataDeAtivacaoRef(){return ativacao;};
 
+void Rastreador::setTipo(short tipo)
+{
+    if(tipo < 0 || tipo > 2) throw std::runtime_error("Tipo inválido de rastreador: " + std::to_string(tipo) + 
+        " (Somente 0(Veicular), 1(Carga), 2(Pessoal) são aceitos)");
+    this->tipo = tipo;
+}
 void Rastreador::setId(unsigned int id) {this->id = id;}
 void Rastreador::setMarca(std::string marca) {this->marca = marca;};
 void Rastreador::setModelo(std::string modelo) {this->modelo = modelo;};
+void Rastreador::setEstado(EstadoDoRastreador estado) {this->estado = estado;}
 
 void Rastreador::updateAlerta(Alerta &alerta)
 {
@@ -50,4 +68,8 @@ std::string Rastreador::getAlertasList()
     std::string l = "";
     for(int i = 0; i < alertas.size(); i++) l += alertas[i].getString() + '\n';
     return l;
+}
+void Rastreador::resetAlertas()
+{
+    alertas.clear();
 }
