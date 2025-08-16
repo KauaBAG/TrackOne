@@ -6,7 +6,7 @@ std::string RastreadorCarga::getString()
         ", remetente: " + remetente + ", destinatario: " + destinatario +
         (eFragil?", e Fragil":", nao e fragil"); 
 }
-RastreadorCarga::RastreadorCarga(int id, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
+RastreadorCarga::RastreadorCarga(unsigned int id, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
     EstadoDoRastreador estado, Data ativacao, std::string tipo, std::string remetente, std::string destinatario, bool eFragil)
     : Rastreador(id, 1, marca, modelo, comunicacao,
         estado, ativacao)

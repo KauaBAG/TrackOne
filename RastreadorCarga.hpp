@@ -12,7 +12,7 @@ private:
     bool eFragil = false;
 public:
     std::string getString();
-    RastreadorCarga(int id, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
+    RastreadorCarga(unsigned int id, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
         EstadoDoRastreador estado, Data ativacao, std::string tipo, std::string remetente, std::string destinatario, bool eFragil);
 
     std::string getTipoDeCarga();
