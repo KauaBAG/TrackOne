@@ -10,7 +10,11 @@ private:
     Banda banda;
     bool fallback;
 public:
-    Gsm(Banda banda, bool fallback) : banda(banda), fallback(fallback), TipoDeComunicacao(0){}
+    Gsm(Banda banda, bool fallback) : TipoDeComunicacao(0)
+    {
+        setBanda(banda);
+        setFallback(fallback);
+    }
     std::string toString(Banda b)
     {
         switch (banda) 

@@ -6,9 +6,12 @@
 class Satelital : public TipoDeComunicacao
 {
 private:
-    int id;
+    unsigned int id;
 public:
-    Satelital(int id) : TipoDeComunicacao(1){}
+    Satelital(int id) : TipoDeComunicacao(1)
+    {
+        setId(id);
+    }
     std::string getString()
     {
         return "Comunicação satelital com id " + std::to_string(id);

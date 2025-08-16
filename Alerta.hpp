@@ -8,7 +8,7 @@ class Alerta
 private:
     void setTipo(short tipo)
     {
-        if(tipo < 0 || tipo > 2) throw std::runtime_error("Tipo inválido de comunicação: " + std::to_string(tipo) + 
+        if(tipo < 0 || tipo > 2) throw std::runtime_error("Tipo inválido de alerta: " + std::to_string(tipo) + 
             " (Somente 0(Velocidade), 1(Bateria), 2(Zona) são aceitos)");
         this->tipo = tipo;
     }

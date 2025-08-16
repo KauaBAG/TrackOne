@@ -9,7 +9,11 @@ private:
     float frequencia;
     std::string tipo;
 public:
-    Rfid(float frequencia, std::string tipo) : TipoDeComunicacao(2), frequencia(frequencia) {}
+    Rfid(float frequencia, std::string tipo) : TipoDeComunicacao(2)
+    {
+        setFrequencia(frequencia);
+        setTipo(tipo);
+    }
     std::string getString()
     {
         return "Comunicação RFID com de frequencia " + std::to_string(frequencia) + " do tipo " + tipo;
