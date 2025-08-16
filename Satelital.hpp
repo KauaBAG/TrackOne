@@ -1,10 +1,22 @@
-#define SATELITAL_HPP
+#pragma once
 
-#include <iostream>
-#include <string> 
+#include "TipoDeComunicacao.hpp"
+#include <string>
 
-class X {
+class Satelital : public TipoDeComunicacao
+{
+private:
+    unsigned int id = -1;
 public:
-    X();
+    Satelital(unsigned int id) : TipoDeComunicacao(1)
+    {
+        setId(id);
+    }
+    std::string getString()
+    {
+        return "Comunicação satelital com id " + std::to_string(id);
+    }
+    unsigned int getId(){return id;}
+    void setId(unsigned int id){this->id = id;}
 };
 
