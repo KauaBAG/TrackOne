@@ -12,10 +12,10 @@ enum EstadoDoRastreador {ATIVO, INATIVO, MANUTENCAO, BLOQUEADO};
 class Rastreador 
 {
 private:
-    void setTipo(short tipo);
+    void setTipoDeRastreador(short tipoDeRastreador);
 protected:
     unsigned int id;
-    short tipo = -1;
+    short tipoDeRastreador = -1;
     std::string marca = "";
     std::string modelo = "";
     TipoDeComunicacao *comunicacao = NULL;
@@ -23,15 +23,15 @@ protected:
     Data ativacao = Data();
     std::vector<Alerta> alertas = {};
 
-    Rastreador(int id, int tipo, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
+    Rastreador(int id, int tipoDeRastreador, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
         EstadoDoRastreador estado, Data ativacao);
 public:
-    virtual std::string getString() = 0;
+    virtual std::string getString();
 
     virtual ~Rastreador();
 
     unsigned int getId();
-    std::string getTipo();
+    std::string getTipoDeRastreador();
     std::string getMarca();
     std::string getModelo();
     EstadoDoRastreador getEstado();

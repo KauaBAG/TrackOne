@@ -16,8 +16,8 @@ public:
     }
     std::string getString() 
     {
-        return "Alerta de Velocidade: Velocidade exercida - " + std::to_string(velocidadeExercida) +
-        "Velocidade limite - " + std::to_string(velocidadeLimite);
+        return AlertaVelocidade::getString() + ", velocidade exercida: " + std::to_string(velocidadeExercida) +
+        ", velocidade limite:" + std::to_string(velocidadeLimite);
     }
 
     float getVelocidadeExercida() {return velocidadeExercida;}

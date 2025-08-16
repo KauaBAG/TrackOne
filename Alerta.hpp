@@ -27,7 +27,10 @@ public:
         setLocalizacao(localizacao);
     }
     
-    virtual std::string getString() = 0;
+    virtual std::string getString()
+    {
+        return std::to_string(subid)+", "+getTipo() + ": data: " + dataDeEmissao.getString() + ", localizacao "+ localizacao;
+    }
     
     std::string getTipo() 
     {

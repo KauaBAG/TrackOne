@@ -1,12 +1,20 @@
 #include "Rastreador.hpp"
-#include "Alerta.hpp"
-#include <string>
+
+
+std::string Rastreador::getString()
+{
+    return getTipoDeRastreador() + " id: " + std::to_string(id) + 
+        ", marca: " + marca + ", modelo: " + modelo + 
+        ", " + comunicacao->getString() + 
+        ", estado: " + getEstadoString() +
+        ", data de ativacao: " + ativacao.getString();
+}
 
 Rastreador::Rastreador(int id, int tipo, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
     EstadoDoRastreador estado, Data ativacao)
 {
     setId(id);
-    setTipo(tipo);
+    setTipoDeRastreador(tipo);
     setMarca(marca);
     setModelo(modelo);
     this->comunicacao = comunicacao;
@@ -18,12 +26,12 @@ Rastreador::Rastreador(int id, int tipo, std::string marca, std::string modelo, 
 Rastreador::~Rastreador() {delete comunicacao;}
 
 unsigned int Rastreador::getId() {return id;}
-std::string Rastreador::getTipo() 
+std::string Rastreador::getTipoDeRastreador() 
 {
-    if(tipo==0) return "Rastreador Veicular";
-    if(tipo==1) return "Rastreador de Carga";
-    if(tipo==2) return "Rastreador Pessoal";
-    throw std::runtime_error("Tipo inválido de rastreador: " + std::to_string(tipo) + 
+    if(tipoDeRastreador==0) return "Rastreador Veicular";
+    if(tipoDeRastreador==1) return "Rastreador de Carga";
+    if(tipoDeRastreador==2) return "Rastreador Pessoal";
+    throw std::runtime_error("Tipo inválido de rastreador: " + std::to_string(tipoDeRastreador) + 
         " (Somente 0(Veicular), 1(Carga), 2(Pessoal) são aceitos)");
 }
 std::string Rastreador::getMarca() {return marca;}
@@ -34,11 +42,11 @@ std::string Rastreador::getEstadoString() {return (std::string[]){"ATIVO", "INAT
 TipoDeComunicacao *Rastreador::getTipoDeComunicacaoPtr(){return comunicacao;}
 Data &Rastreador::getDataDeAtivacaoRef(){return ativacao;};
 
-void Rastreador::setTipo(short tipo)
+void Rastreador::setTipoDeRastreador(short tipoDeRastreador)
 {
-    if(tipo < 0 || tipo > 2) throw std::runtime_error("Tipo inválido de rastreador: " + std::to_string(tipo) + 
+    if(tipoDeRastreador < 0 || tipoDeRastreador > 2) throw std::runtime_error("Tipo inválido de rastreador: " + std::to_string(tipoDeRastreador) + 
         " (Somente 0(Veicular), 1(Carga), 2(Pessoal) são aceitos)");
-    this->tipo = tipo;
+    this->tipoDeRastreador = tipoDeRastreador;
 }
 void Rastreador::setId(unsigned int id) {this->id = id;}
 void Rastreador::setMarca(std::string marca) {this->marca = marca;};

@@ -6,8 +6,8 @@
 class Rfid : public TipoDeComunicacao
 {
 private:
-    float frequencia;
-    std::string tipo;
+    float frequencia = -1;
+    std::string tipo = "";
 public:
     Rfid(float frequencia, std::string tipo) : TipoDeComunicacao(2)
     {

@@ -7,8 +7,8 @@ enum Banda{_2G, _4G, _5G};
 class Gsm : TipoDeComunicacao
 {
 private:
-    Banda banda;
-    bool fallback;
+    Banda banda = _2G;
+    bool fallback = false;
 public:
     Gsm(Banda banda, bool fallback) : TipoDeComunicacao(0)
     {

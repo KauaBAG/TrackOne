@@ -6,7 +6,7 @@
 class Satelital : public TipoDeComunicacao
 {
 private:
-    unsigned int id;
+    unsigned int id = -1;
 public:
     Satelital(int id) : TipoDeComunicacao(1)
     {
