@@ -4,7 +4,7 @@
 
 enum Banda{_2G, _4G, _5G};
 
-class Gsm : TipoDeComunicacao
+class Gsm : public TipoDeComunicacao
 {
 private:
     Banda banda = _2G;
@@ -25,6 +25,8 @@ public:
                 return "4G";
             case (_5G):
                 return "5G";
+            default:
+                return "Desconhecido";
         }
     }
     std::string getString()

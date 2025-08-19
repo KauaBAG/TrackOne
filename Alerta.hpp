@@ -18,6 +18,8 @@ protected:
     Data dataDeEmissao;
     std::string localizacao = "";
 
+public:
+
     Alerta(unsigned int tipo, unsigned int subid, Data dataDeEmissao, std::string localizacao)
     {
         setTipo(tipo);
@@ -25,11 +27,11 @@ protected:
         setDataDeEmissao(dataDeEmissao);
         setLocalizacao(localizacao);
     }
-public:
+
     
     virtual std::string getString()
     {
-        return std::to_string(subid)+", "+getTipo() + ": data: " + dataDeEmissao.getString() + ", localizacao "+ localizacao;
+        return std::to_string(subid)+", "+getTipo() + ", data: " + dataDeEmissao.getString() + ", localizacao "+ localizacao;
     }
     
     std::string getTipo() 

@@ -1,5 +1,5 @@
 #include "Rastreador.hpp"
-
+#include "Data.hpp"
 
 std::string Rastreador::getString()
 {
