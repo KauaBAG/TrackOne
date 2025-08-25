@@ -27,6 +27,7 @@ protected:
         EstadoDoRastreador estado, Data ativacao);
 public:
     virtual std::string getString();
+    virtual std::string getStringJSON();
 
     virtual ~Rastreador();
 
@@ -50,4 +51,6 @@ public:
     void deleteAlerta(int subid);
     std::string getAlertasList();
     void resetAlertas();
+    std::vector<Alerta> getAlertas();
+    
 };

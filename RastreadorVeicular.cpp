@@ -4,6 +4,10 @@ std::string RastreadorVeicular::getString()
 {
     return Rastreador::getString() + ", tipo: " + tipo + ", marca do carro: "+marcaDoCarro +", modelo do carro: "+modeloDoCarro+(temCamera?", com":", sem")+" camera";
 }
+std::string RastreadorVeicular::getStringJSON()
+{
+    return Rastreador::getStringJSON() + ", " + tipo + ", " + marcaDoCarro +", "+ modeloDoCarro+(temCamera?", com":", sem")+" camera";
+}
 RastreadorVeicular::RastreadorVeicular(unsigned int id, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
     EstadoDoRastreador estado, Data ativacao, std::string tipo, std::string marcaDoCarro, std::string modeloDoCarro, Placa placa, bool temCamera)
     : Rastreador(id, 0, marca, modelo, comunicacao,

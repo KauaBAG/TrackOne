@@ -10,6 +10,13 @@ std::string Rastreador::getString()
         ", data de ativacao: " + ativacao.getString();
 }
 
+std::string Rastreador::getStringJSON()
+{
+    return getTipoDeRastreador() +  ", " + std::to_string(id) +", " +
+    marca +", "+ modelo + ", "+comunicacao->getString()+", " +
+    getEstadoString() +", "+ ativacao.getString();
+}
+
 Rastreador::Rastreador(int id, int tipo, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
     EstadoDoRastreador estado, Data ativacao)
 {
@@ -80,4 +87,7 @@ std::string Rastreador::getAlertasList()
 void Rastreador::resetAlertas()
 {
     alertas.clear();
+}
+std::vector<Alerta> Rastreador::getAlertas(){
+    return alertas;
 }
