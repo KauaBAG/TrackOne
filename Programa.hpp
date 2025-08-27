@@ -1,4 +1,3 @@
-//Programa.hpp
 #pragma once
 
 #include <iostream>
