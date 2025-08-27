@@ -10,7 +10,7 @@ private:
     int ano = 2000;
 
 public:
-    Data();
+    Data() {}; 
     Data(short dia, short mes, int ano) : dia(dia), mes(mes), ano(ano){}
 
     short getDia() {return dia;}

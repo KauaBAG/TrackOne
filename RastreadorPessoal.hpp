@@ -12,6 +12,7 @@ private:
 
 public:
     std::string getString();
+    std::string getStringJSON();
     RastreadorPessoal(unsigned int id, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
         EstadoDoRastreador estado, Data ativacao, std::string nome, std::string telefone, std::string documento);
 

@@ -4,6 +4,10 @@ std::string RastreadorPessoal::getString()
 {
     return Rastreador::getString() + ", nome: " + nome + ", telefone: " + telefone + ", documento " + documento;
 }
+std::string RastreadorPessoal::getStringJSON()
+{
+    return Rastreador::getStringJSON() + ", " + nome + ", " + telefone + ", " + documento;
+}
 RastreadorPessoal::RastreadorPessoal(unsigned int id, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
     EstadoDoRastreador estado, Data ativacao, std::string nome, std::string telefone, std::string documento)
 : Rastreador(id, 2, marca, modelo, comunicacao,
