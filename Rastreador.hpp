@@ -50,7 +50,6 @@ public:
     TipoDeComunicacao* getTipoDeComunicacaoPtr();
     Data& getDataDeAtivacaoRef();
     std::string getEstadoString();
-    std::vector<Alerta> getAlertas();
     
     // Setters
     void setId(unsigned int id);
@@ -64,4 +63,5 @@ public:
     void deleteAlerta(int subid);
     std::string getAlertasList();
     void resetAlertas();
+    Alerta* getAlerta(int subid);
 };

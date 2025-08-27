@@ -1,4 +1,5 @@
 #include "Rastreador.hpp"
+#include "Alerta.hpp"
 #include "Data.hpp"
 #include <memory>
 
@@ -111,6 +112,9 @@ void Rastreador::resetAlertas()
     alertas.clear();
 }
 
-std::vector<Alerta> Rastreador::getAlertas(){
-    return alertas;
+Alerta* Rastreador::getAlerta(int subid) 
+{
+    int alertaInd = searchAlerta(id);
+    if(alertaInd == -1) return nullptr;
+    return &alertas[alertaInd];
 }
