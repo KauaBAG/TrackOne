@@ -16,6 +16,7 @@
 #include <string>
 #include <iomanip>
 #include <vector>
+#include <limits>
 
 using namespace std;
 
@@ -29,11 +30,36 @@ struct RastreadorBase {
     Data dataDeAtivacao;
 };
 
+// Função para limpar o buffer de entrada
+void limparBuffer() {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
+
+// Função para entrada segura de inteiros
+int lerInteiro(const string& mensagem) {
+    int valor;
+    while (true) {
+        cout << mensagem;
+        if (cin >> valor) {
+            limparBuffer();
+            return valor;
+        } else {
+            cout << "Entrada inválida. Digite um número inteiro.\n";
+            limparBuffer();
+        }
+    }
+}
+
 Data lerData(string mensagem) {
     short dia, mes;
     int ano;
     cout << mensagem << " (dia mes ano): ";
+    
     cin >> dia >> mes >> ano;
+      
+    limparBuffer();
+    
     return Data(dia, mes, ano);
 }
 
@@ -44,10 +70,9 @@ int menu(const vector<string>& array, string nome) {
         for (size_t i = 0; i < array.size(); ++i) {
             cout << setw(2) << i + 1 << " - " << array[i] << endl;
         }
-        cout << "Escolha uma opção: ";
-        int escolha;
-        cin >> escolha;
-        cin.ignore();
+        
+        int escolha = lerInteiro("Escolha uma opção: ");
+        
         if (escolha > 0 && escolha <= static_cast<int>(array.size())) {
             return escolha;
         } else {
@@ -57,6 +82,7 @@ int menu(const vector<string>& array, string nome) {
 }
 
 TipoDeComunicacao* criarComunicacaoGsm() {
+    cout << "\n=== Criando Comunicação GSM ===\n";
     int tipoDeBanda = menu({"2G", "4G", "5G"}, "dos Tipos de Banda") - 1;
     Banda banda;
     switch (tipoDeBanda) {
@@ -67,49 +93,66 @@ TipoDeComunicacao* criarComunicacaoGsm() {
     }
 
     bool fallback;
-    cout << "\nPossui fallback?  \n0. Nao \n1. Sim\n Resposta: ";
-    int i = 0;
-    cin >> i;
+    cout << "\nPossui fallback?  \n0. Nao \n1. Sim\n";
+    int i = lerInteiro("Resposta: ");
     fallback = (i == 1);
 
-    return new Gsm(banda, fallback);
+    cout << "Criando objeto GSM...\n";
+    TipoDeComunicacao* gsm = new Gsm(banda, fallback);
+    cout << "GSM criado com sucesso!\n";
+    return gsm;
 }
 
 TipoDeComunicacao* criarComunicacaoRfid() {
+    cout << "\n=== Criando Comunicação RFID ===\n";
     float freq;
     cout << "Digite a frequencia da comunicação: ";
-    cin >> freq;
+    while (!(cin >> freq) || freq <= 0) {
+        cout << "Frequência inválida. Digite novamente: ";
+        limparBuffer();
+    }
+    limparBuffer();
+    
     string type;
     cout << "Digite o tipo de frequencia: ";
-    cin >> type;
-    cin.ignore();
-    return new Rfid(freq, type);
+    getline(cin, type);
+    
+    cout << "Criando objeto RFID...\n";
+    TipoDeComunicacao* rfid = new Rfid(freq, type);
+    cout << "RFID criado com sucesso!\n";
+    return rfid;
 }
 
 TipoDeComunicacao* criarComunicacaoSatelital() {
-    int satid;
-    cout << "Digite o Id da comunicação satelital: ";
-    cin >> satid;
-    return new Satelital(satid);
+    cout << "\n=== Criando Comunicação Satelital ===\n";
+    int satid = lerInteiro("Digite o Id da comunicação satelital: ");
+    
+    cout << "Criando objeto Satelital...\n";
+    TipoDeComunicacao* satelital = new Satelital(satid);
+    cout << "Satelital criado com sucesso!\n";
+    return satelital;
 }
-
 
 TipoDeComunicacao* criarComunicacao() {
     int tipoDeCom = menu({"Gsm","Rfid", "Satelital"}, "dos Tipos de comunicacao") - 1;
     
-    switch (tipoDeCom) {
-        case 0: return criarComunicacaoGsm();
-        case 1: return criarComunicacaoRfid();
-        case 2: return criarComunicacaoSatelital();
-        default: return nullptr;
+    try {
+        switch (tipoDeCom) {
+            case 0: return criarComunicacaoGsm();
+            case 1: return criarComunicacaoRfid();
+            case 2: return criarComunicacaoSatelital();
+            default: return nullptr;
+        }
+    } catch (const exception& e) {
+        cout << "Erro ao criar comunicação: " << e.what() << endl;
+        return nullptr;
     }
 }
 
 RastreadorBase lerDadosBase() {
-    unsigned int id;
-    cout << "Digite o ID do rastreador: ";
-    cin >> id;
-    cin.ignore();
+    cout << "\n=== Dados Base do Rastreador ===\n";
+    
+    unsigned int id = static_cast<unsigned int>(lerInteiro("Digite o ID do rastreador: "));
 
     string marca = "";
     cout << "\nDigite a marca do rastreador: ";
@@ -125,9 +168,9 @@ RastreadorBase lerDadosBase() {
     return {id, marca, modelo, estado, dataDeAtivacao};
 }
 
-
 void criarRastreadorVeicular(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
-
+    cout << "\n=== Criando Rastreador Veicular ===\n";
+    
     string tipoDeCarro, marcaDoCarro, modeloDoCarro;
     cout << "Qual o tipo de carro: ";
     cin >> tipoDeCarro;
@@ -135,17 +178,17 @@ void criarRastreadorVeicular(const RastreadorBase& base, TipoDeComunicacao* comu
     cin >> marcaDoCarro;
     cout << "Qual o modelo do carro: ";
     cin >> modeloDoCarro;
+    limparBuffer();
     
     bool temCamera;
-    cout << "\nPossui Camera?  \n0. Nao \n1. Sim\n Resposta: ";
-    int i = 0;
-    cin >> i;
+    cout << "\nPossui Camera?  \n0. Nao \n1. Sim\n";
+    int i = lerInteiro("Resposta: ");
     temCamera = (i == 1);
     
     string identificador, localDeEmissao;
     cout << "\nDigite os digitos da placa: ";
     cin >> identificador;
-    cin.ignore();
+    limparBuffer();
     cout << "Digite o local de emissão da placa: ";
     getline(cin, localDeEmissao);
     
@@ -153,16 +196,22 @@ void criarRastreadorVeicular(const RastreadorBase& base, TipoDeComunicacao* comu
     
     Placa placa(identificador, localDeEmissao, tipo);
     
+    cout << "Criando objeto RastreadorVeicular...\n";
+
     RastreadorVeicular rastr(base.id, base.marca, base.modelo, comunicacao, 
-                           base.estado, base.dataDeAtivacao, tipoDeCarro, 
-                           marcaDoCarro, modeloDoCarro, placa, temCamera);
+                               base.estado, base.dataDeAtivacao, tipoDeCarro, 
+                               marcaDoCarro, modeloDoCarro, placa, temCamera);
     cout << "\n" << rastr.getString() << "\n";
+    
+    cout << "Inserindo rastreador no programa...\n";
     programa.InserirRastreador(rastr);
+    cout << "Rastreador inserido com sucesso!\n";
 }
 
 void criarRastreadorCarga(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
+    cout << "\n=== Criando Rastreador de Carga ===\n";
+    
     string tipoCarga, remetente, destinatario;
-    cin.ignore();
     cout << "Qual o tipo de carga: ";
     getline(cin, tipoCarga);
     cout << "Qual o remetente da carga: ";
@@ -171,21 +220,25 @@ void criarRastreadorCarga(const RastreadorBase& base, TipoDeComunicacao* comunic
     getline(cin, destinatario);
     
     bool fragil;
-    cout << "\nÉ fragil?  \n0. Nao \n1. Sim\n Resposta: ";
-    int i = 0;
-    cin >> i;
+    cout << "\nÉ fragil?  \n0. Nao \n1. Sim\n";
+    int i = lerInteiro("Resposta: ");
     fragil = (i == 1);
     
-    RastreadorCarga rastr(base.id, base.marca, base.modelo, comunicacao, 
+    cout << "Criando objeto RastreadorCarga...\n";
+    RastreadorCarga rastr = RastreadorCarga(base.id, base.marca, base.modelo, comunicacao, 
                         base.estado, base.dataDeAtivacao, tipoCarga, 
                         remetente, destinatario, fragil);
     cout << "\n" << rastr.getString() << "\n";
+        
+    cout << "Inserindo rastreador no programa...\n";
     programa.InserirRastreador(rastr);
+    cout << "Rastreador inserido com sucesso!\n";
 }
 
 void criarRastreadorPessoal(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
+    cout << "\n=== Criando Rastreador Pessoal ===\n";
+    
     string nome, telefone, documento;
-    cin.ignore();
     cout << "Digite seu nome: ";
     getline(cin, nome);
     cout << "Digite seu telefone: ";
@@ -193,147 +246,180 @@ void criarRastreadorPessoal(const RastreadorBase& base, TipoDeComunicacao* comun
     cout << "Digite seu documento: ";
     getline(cin, documento);
     
+    cout << "Criando objeto RastreadorPessoal...\n";
     RastreadorPessoal rastr(base.id, base.marca, base.modelo, comunicacao, 
-                          base.estado, base.dataDeAtivacao, nome, telefone, documento);
+                              base.estado, base.dataDeAtivacao, nome, telefone, documento);
     cout << "\n" << rastr.getString() << "\n";
+        
+    cout << "Inserindo rastreador no programa...\n";
     programa.InserirRastreador(rastr);
+    cout << "Rastreador inserido com sucesso!\n";
 }
 
 int main() {
+    cout << "=== Sistema de Rastreamento Iniciado ===\n";
+    
     while(true) {
-        int escolhaPrincipal = menu({"Gerenciar Rastreados", "Gerenciar Alertas", "Sair"}, "principal");
+        try {
+            int escolhaPrincipal = menu({"Gerenciar Rastreados", "Gerenciar Alertas", "Sair"}, "principal");
+            
+            switch (escolhaPrincipal) {
+            case 1: {
+                bool voltarAoMenuPrincipal = false;
         
-        switch (escolhaPrincipal) {
-        case 1: {
-            bool voltarAoMenuPrincipal = false;
-    
-            while (!voltarAoMenuPrincipal) {
-                int escolhaRastreados = menu({"Cadastrar Rastreador", "Listar Rastreadores", "Exibir Rastreador", 
-                                            "Alterar Rastreador", "Remover Rastreador", "Exibir Relatório", "Voltar"}, "dos Rastreados");
-                
-                switch (escolhaRastreados) {
-                    case 1: {
-                        RastreadorBase base = lerDadosBase();    
-                        short tipoDeRastreador = menu({"Veicular", "Carga", "Pessoal"}, "dos Tipos de Rastreador") - 1;                        
-                        TipoDeComunicacao* comunicacao = criarComunicacao();
-                        
-                        switch (tipoDeRastreador) {
-                            case 0: criarRastreadorVeicular(base, comunicacao); break;
-                            case 1: criarRastreadorCarga(base, comunicacao); break;
-                            case 2: criarRastreadorPessoal(base, comunicacao); break;
-                        }
+                while (!voltarAoMenuPrincipal) {
+                    int escolhaRastreados = menu({"Cadastrar Rastreador", "Listar Rastreadores", "Exibir Rastreador", 
+                                                "Alterar Rastreador", "Remover Rastreador", "Exibir Relatório", "Voltar"}, "dos Rastreados");
                     
-                        //delete comunicacao;
+                    switch (escolhaRastreados) {
+                        case 1: {
+                            cout << "\n=== CADASTRO DE RASTREADOR ===\n";
+                            
+                            RastreadorBase base = lerDadosBase();    
+                            short tipoDeRastreador = menu({"Veicular", "Carga", "Pessoal"}, "dos Tipos de Rastreador") - 1;                        
+                            
+                            cout << "Criando comunicação...\n";
+                            TipoDeComunicacao* comunicacao = criarComunicacao();
+                            
+                            // Verificar se a comunicação foi criada com sucesso
+                            if (comunicacao == nullptr) {
+                                cout << "Erro ao criar comunicação. Operação cancelada.\n";
+                                break;
+                            }
+                            
+                            cout << "Comunicação criada com sucesso. Criando rastreador...\n";
+                            
+                            switch (tipoDeRastreador) {
+                                case 0: criarRastreadorVeicular(base, comunicacao); break;
+                                case 1: criarRastreadorCarga(base, comunicacao); break;
+                                case 2: criarRastreadorPessoal(base, comunicacao); break;
+                                default:
+                                    cout << "Tipo de rastreador inválido.\n";
+                                    delete comunicacao; // Limpar memória se não foi usado
+                                    break;
+                            }
+                            
+                            cout << "\nOperação de cadastro concluída.\n";
+                            break;
+                        }      
+        
+                        case 2: {
+                            cout << "\n=== LISTAR RASTREADORES ===\n";
+                            try {
+                                cout << programa.ListarRastreadores();
+                            } catch (const exception& e) {
+                                cout << "Erro ao listar rastreadores: " << e.what() << endl;
+                            }
+                            break;
+                        }
+                        case 3: {
+                            cout << "Exibir Rastreador\n";
+                            unsigned int id;
+                            cin >> id;
+                            Rastreador* selected = programa.getRastreadorId(id);
+                            if(selected==nullptr) break;
+                            cout << "\n" << selected->getString() << "\n";
+                            break;
+                        }
+                        case 4: {
+                            // Código pra Alterar Rastreadores
+                            break;
+                        }
+                        case 5: {
+                            cout << "Remover Rastreador\n";
+                            // Código para remover rastreador
+                            break;
+                        }
+                        case 6: {
+                            cout << "Exibir Relatório\n";
+                            // Código para exibir relatório
+                            break;
+                        }
+                        case 7: {
+                            cout << "Voltando ao menu principal...\n";
+                            voltarAoMenuPrincipal = true; // Sinaliza para sair do loop
+                            break;
+                        }
+                        default: {
+                            cout << "Opção inválida. Tente novamente.\n";
+                            break; 
+                        } // default
+                    } // switch
+                } //while
+                break; // Sai do case 1 do menu externo
+            }
+        
+            case 2: {
+                cout << "Gerenciar Alertas\n";
+                int escolhaAlertas = menu({"Cadastrar Alerta", "Listar Alertas", "Exibir Alerta", 
+                                              "Alterar Alerta", "Remover Alerta", "Exibir Relatório", "Voltar"}, "Dos Alertas");
+                switch (escolhaAlertas) {
+                    case 1: {
+                        cout << "Cadastrar Alerta\n";
+                        
+                        unsigned int tipoDeAlerta = menu({"Velocidade", "Bateria", "Zona"}, "dos Tipos de Alerta");
+                        
+                        unsigned int subid = static_cast<unsigned int>(lerInteiro("Digite o subid do alerta: "));
+                        
+                        Data dataDeEmissao = lerData("Digite a data de emissão do alerta");
+                        
+                        string localizacao;
+                        cout << "Digite a localização do alerta: ";
+                        getline(cin, localizacao);
+                        
+                        try {
+                            Alerta alerta(tipoDeAlerta, subid, dataDeEmissao, localizacao);
+                            cout << alerta.getString();
+                        } catch (const exception& e) {
+                            cout << "Erro ao criar alerta: " << e.what() << endl;
+                        }
                         break;
-                    }      
-    
+                    }
                     case 2: {
-                        cout << "Listar Rastreadores\n";
-                        cout << programa.ListarRastreadores();
+                        cout << "Listar Alertas\n";
+                        // Código para listar alertas
                         break;
                     }
                     case 3: {
-                        cout << "Exibir Rastreador\n";
-                        // Código para exibir rastreador
+                        cout << "Exibir Alerta\n";
+                        // Código para exibir alerta
                         break;
                     }
                     case 4: {
-                        cout << "Alterar Rastreador\n";
-                        // Código para alterar rastreador
+                        cout << "Alterar Alerta\n";
+                        // Código para alterar alerta
                         break;
                     }
                     case 5: {
-                        cout << "Remover Rastreador\n";
-                        // Código para remover rastreador
+                        cout << "Remover Alerta\n";
+                        // Código para remover alerta
                         break;
                     }
                     case 6: {
                         cout << "Exibir Relatório\n";
-                        // Código para exibir relatório
+                        // Código para exibir relatório de alertas
                         break;
                     }
-                    case 7: {
-                        cout << "Voltando ao menu principal...\n";
-                        voltarAoMenuPrincipal = true; // Sinaliza para sair do loop
-                        break;
-                    }
-                    default: {
+                    case 7:
+                        break; // Voltar ao menu principal
+                    default:
                         cout << "Opção inválida. Tente novamente.\n";
-                        break; 
-                    } // default
-                } // switch
-            } //while
-            break; // Sai do case 1 do menu externo
-        }
-    
-        case 2: {
-            cout << "Gerenciar Alertas\n";
-            int escolhaAlertas = menu({"Cadastrar Alerta", "Listar Alertas", "Exibir Alerta", 
-                                          "Alterar Alerta", "Remover Alerta", "Exibir Relatório", "Voltar"}, "Dos Alertas");
-            switch (escolhaAlertas) {
-                case 1: {
-                    cout << "Cadastrar Alerta\n";
-
-                    
-                    unsigned int tipoDeAlerta = menu({"Velocidade", "Bateria", "Zona"}, "dos Tipos de Alerta");
-
-                    unsigned int subid;
-                    cout << "Digite o subid do alerta: ";
-                    cin >> subid;
-                    
-                    short dia, mes;
-                    int ano;
-                    cout << "Digite a data de emissão do alerta (dia mes ano): ";
-                    cin >> dia >> mes >> ano;
-                    Data dataDeEmissao(dia, mes, ano);
-
-                    string localizacao;
-                    cout << "Digite a localização do alerta: ";
-                    cin.ignore(); // Limpar o buffer do cin
-                    getline(cin, localizacao);
-
-                    Alerta alerta(tipoDeAlerta, subid, dataDeEmissao, localizacao);
-                    cout << alerta.getString();
-                    break;
-                }
-                case 2: {
-                    cout << "Listar Alertas\n";
-                    // Código para listar alertas
-                    break;
-                }
-                case 3: {
-                    cout << "Exibir Alerta\n";
-                    // Código para exibir alerta
-                    break;
-                }
-                case 4: {
-                    cout << "Alterar Alerta\n";
-                    // Código para alterar alerta
-                    break;
-                }
-                case 5: {
-                    cout << "Remover Alerta\n";
-                    // Código para remover alerta
-                    break;
-                }
-                case 6: {
-                    cout << "Exibir Relatório\n";
-                    // Código para exibir relatório de alertas
-                    break;
-                }
-                case 7:
-                    break; // Voltar ao menu principal
-                default:
-                    cout << "Opção inválida. Tente novamente.\n";
-                    break;
-                }
-            break;    
-            }    
-        case 3:
-            return 0; // Sair do programa
-        default:
-            cout << "Opção inválida. Tente novamente.\n";
-            break;
+                        break;
+                    }
+                break;    
+                }    
+            case 3:
+                programa.Salvar();
+                programa.JSON();
+                cout << "Encerrando programa...\n";
+                return 0; // Sair do programa
+            default:
+                cout << "Opção inválida. Tente novamente.\n";
+                break;
+            }
+        } catch (const exception& e) {
+            cout << "Erro geral no programa: " << e.what() << endl;
+            cout << "Tentando continuar...\n";
         }
     }
 }

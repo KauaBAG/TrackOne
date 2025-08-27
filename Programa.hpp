@@ -1,3 +1,6 @@
+//Programa.hpp
+#pragma once
+
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -42,7 +45,11 @@ class programa{
     void AlterarRastreador(Rastreador RastreadorAtualizado){
         int i = PesquisarRastreador(RastreadorAtualizado.getId());
     	if(i == -1) cout << "Ta errado boy" << endl;
-        else rastreadores[i] = RastreadorAtualizado; 
+        else 
+        {
+            //delete rastreadores[i];
+            rastreadores[i] = RastreadorAtualizado; 
+        }
     }
     
     bool RemoverRastreador(unsigned int id){
@@ -69,7 +76,7 @@ class programa{
         if(idxr == -1){
             cout << "Rastreador não encontrado!" << endl;
             return -1;
-            }
+                                                                                                                                                                                                                }
         Rastreador& rastreador = rastreadores.at(idxr);
         int idxa = rastreador.searchAlerta(subid);
 
@@ -121,5 +128,16 @@ class programa{
         json.close();
         cout << "Arquivo Salvo em \"Arquivo.json\"" << endl;
         }
+        
+    Rastreador* getRastreadorByIndex(int index) { return &(rastreadores[index]); }
+    
+    Rastreador* getRastreadorId(int id) {
+        int idxr = PesquisarRastreador(id);
+        if(idxr == -1) {
+            cout << "Rastreador não encontrado!" << endl;
+            return nullptr;
+        }
+        return getRastreadorByIndex(idxr);
+    }
 
 };
