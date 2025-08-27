@@ -28,6 +28,7 @@ public:
     string ListarRastreadores();
     void AlterarRastreador(Rastreador RastreadorAtualizado);
     bool RemoverRastreador(unsigned int id);
+    void contadorTipo();
     void Relatorio();
 
     void ResetRastreadores();
