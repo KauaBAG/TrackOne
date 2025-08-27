@@ -20,7 +20,7 @@
 
 using namespace std;
 
-programa programa;
+Programa programa;
 
 struct RastreadorBase {
     unsigned int id;
@@ -289,7 +289,7 @@ int main() {
                         cout << "Exibir Rastreador\n";
                         unsigned int id;
                         cin >> id;
-                        Rastreador* selected = programa.getRastreadorId(id);
+                        Rastreador* selected = programa.getRastreador(id);
                         if(selected==nullptr) break;
                         cout << "\n" << selected->getString() << "\n";
                         break;
@@ -297,7 +297,7 @@ int main() {
                     case 4: {
                         unsigned int id;
                         cin >> id;
-                        Rastreador* rastr = programa.getRastreadorId(id);
+                        Rastreador* rastr = programa.getRastreador(id);
                         cout << rastr->getString();
                         
                         int ParamAlterar = menu({"Marca","Modelo","Estado","Tipo de Rastreador", "Tipo de comunicacao"}, "Parametros de Atualizaçao");
