@@ -56,7 +56,10 @@ std::string Rastreador::getModelo() {return modelo;}
 
 EstadoDoRastreador Rastreador::getEstado() {return estado;}
 
-std::string Rastreador::getEstadoString() {return (std::string[]){"ATIVO", "INATIVO", "MANUTENCAO", "BLOQUEADO"}[estado];}
+std::string Rastreador::getEstadoString() {
+    static const std::string estados[] = {"ATIVO", "INATIVO", "MANUTENCAO", "BLOQUEADO"};
+    return estados[estado];
+}
 
 // MUDANÇA: Retornar ponteiro raw do shared_ptr para compatibilidade
 TipoDeComunicacao *Rastreador::getTipoDeComunicacaoPtr(){
@@ -118,3 +121,4 @@ Alerta* Rastreador::getAlerta(int subid)
     if(alertaInd == -1) return nullptr;
     return &alertas[alertaInd];
 }
+int Rastreador::getQtdAlertas() {return alertas.size();}

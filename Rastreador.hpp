@@ -64,4 +64,5 @@ public:
     std::string getAlertasList();
     void resetAlertas();
     Alerta* getAlerta(int subid);
+    int getQtdAlertas();
 };

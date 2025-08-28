@@ -19,9 +19,14 @@ public:
 
     std::string getMesString()
     {
-        return (std::string[])
-            {"Janeiro", "Fevereiro", "Marco", "Abril", "Maio", "Junho", "Julho",
-            "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"}[mes-1];
+        static const std::string meses[] = {
+            "Janeiro", "Fevereiro", "Marco", "Abril", "Maio", "Junho", "Julho",
+            "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        };
+        if (mes >= 1 && mes <= 12)
+            return meses[mes - 1];
+        else
+            return "Mês Inválido";
     }
 
     void setDia(short dia) 

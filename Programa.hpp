@@ -39,5 +39,8 @@ public:
     void Salvar();
     void JSON();      
 
+    void Carregar();
+    void carregarJSON();
+
     Alerta* getAlerta(int id, int subid);
 };
