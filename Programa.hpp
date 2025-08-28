@@ -20,6 +20,7 @@ class Programa
 protected:
     vector <Rastreador> rastreadores;
     Rastreador* getRastreadorByIndex(int index);
+    int qtda = 0, qtdc = 0, qtdp = 0, qtdv = 0;
 
 public:
     int InserirRastreador(Rastreador& rastreador);
@@ -27,6 +28,7 @@ public:
     string ListarRastreadores();
     void AlterarRastreador(Rastreador RastreadorAtualizado);
     bool RemoverRastreador(unsigned int id);
+    void contadorTipo();
     void Relatorio();
 
     void ResetRastreadores();

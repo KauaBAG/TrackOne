@@ -50,6 +50,75 @@ int Programa::PesquisarRastreador(unsigned int id)
         if(id == rastreadores[i].getId()) return i;
     return -1;
 }
+void Programa::contadorTipo(){
+
+        for(auto &rastreador : rastreadores){
+            if(rastreador.getTipoDeRastreador() == "Rastreador de Carga"){
+                qtdc++;
+            }else if(rastreador.getTipoDeRastreador() == "Rastreador Veicular"){
+                qtdv++;
+            }else if(rastreador.getTipoDeRastreador() == "Rastreador Pessoal"){
+                qtdp++;
+            }
+            qtda = rastreador.getQtdAlertas();
+        }
+    }
+    
+    void Programa::Relatorio(){
+
+        cout << "Rastreadores cadastrados: " << rastreadores.size() << endl;
+        cout << "Rastreadores de carga: " << qtdc << endl;
+        cout << "Rastreadores pessoais: " << qtdp << endl;
+        cout << "Rastreadores veiculares: " << qtdv << endl;
+        cout << "Rastreadores com alerta: " << qtda << endl;
+
+        int escolha;
+        int escolha2;
+        cin >> escolha;
+        cin.ignore();
+
+        cout << "1 - Consultar rastreadores: " << endl;
+        cout << "2 - Consultar rastreadores por tipo: " << endl;
+        cout << "3 - Consultar rastreadores com alertas" << endl;
+
+        switch(escolha){
+
+            case 1:
+                ListarRastreadores();
+                break;
+            case 2:
+                cout << "1 - Rastreador de carga " << endl;
+                cout << "2 - Rastreador pessoal " << endl;
+                cout << "3 - Rastreador veicular " << endl;
+                
+                for (auto &rastreador : rastreadores){
+                switch(escolha2){
+                        
+                        case 1:
+                        if (rastreador.getTipoDeRastreador() == "Rastreador de Carga"){
+                        cout << rastreador.getString();
+                        }
+                        case 2:
+                        if (rastreador.getTipoDeRastreador() == "Rastreador Pessoal"){
+                            cout << rastreador.getString();
+                        }
+                        case 3:
+                        if (rastreador.getTipoDeRastreador() == "Rastreador Veicular"){
+                            cout << rastreador.getString();
+                        }
+                    }
+                }
+                        break;
+            case 3:
+                for (int i = 0; i < rastreadores.size(); i++){
+                    if(rastreadores.at(i).getQtdAlertas() != 0){
+                        cout << rastreadores.at(i).getString() << endl;
+                    }
+                }
+                break;
+        }
+        
+    }
 
 void Programa::Salvar()
 {

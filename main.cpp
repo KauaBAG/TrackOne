@@ -114,7 +114,7 @@ TipoDeComunicacao* criarComunicacaoRfid() {
     limparBuffer();
     
     string type;
-    
+    cout << "Digite o tipo de frequencia: ";
     getline(cin, type);
     
     TipoDeComunicacao* rfid = new Rfid(freq, type);
@@ -282,6 +282,8 @@ int main() {
                         cout << "\n=== LISTAR RASTREADORES ===\n";
                         
                         cout << programa.ListarRastreadores();
+                        cout << "\n# Pressione qualquer tecla para continuar";
+                        getchar();
                         
                         break;
                     }
@@ -296,6 +298,7 @@ int main() {
                     }
                     case 4: {
                         unsigned int id;
+                        cout << "Digite o Id do rastreador que deseja alterar: ";
                         cin >> id;
                         Rastreador* rastr = programa.getRastreador(id);
                         cout << rastr->getString();
@@ -315,6 +318,7 @@ int main() {
                     case 5: {
                         cout << "Remover Rastreador\n";
                         unsigned int id;
+                        cout << "Digite o Id do rastreador que deseja excluir: ";
                         cin >> id;
                         
                         programa.RemoverRastreador(id);
