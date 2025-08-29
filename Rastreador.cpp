@@ -2,6 +2,7 @@
 #include "Alerta.hpp"
 #include "Data.hpp"
 #include <memory>
+#include <iostream>
 
 std::string Rastreador::getString()
 {
@@ -18,6 +19,29 @@ std::string Rastreador::getStringJSON()
     marca +", "+ modelo + ", "+comunicacao->getString()+", " +
     getEstadoString() +", "+ ativacao.getString();
 }
+
+DadosRastreador Rastreador::getDadosCarregar() {
+    DadosRastreador dados;
+    dados.tipoDeRastreador = tipoDeRastreador;
+    dados.id = id;
+    dados.marca = marca;
+    dados.modelo = modelo;
+    dados.tipoDeComunicacao = comunicacao->getTipo();
+    dados.estado = estado;
+    dados.diaAtivacao = ativacao.getDia();
+    dados.mesAtivacao = ativacao.getMes();
+    dados.anoAtivacao = ativacao.getAno();
+    return dados;
+}
+
+std::string Rastreador::getStringCarregar() {
+    DadosRastreador dados = getDadosCarregar();
+    return std::to_string(dados.tipoDeRastreador) + "  " + std::to_string(dados.id) + "  " +
+           dados.marca + "  " + dados.modelo + "  " + std::to_string(dados.tipoDeComunicacao) + "  " +
+           std::to_string(dados.estado) + "  " + std::to_string(dados.diaAtivacao) + "  " +
+           std::to_string(dados.mesAtivacao) + "  " + std::to_string(dados.anoAtivacao);
+}
+
 
 // PRINCIPAL MUDANÇA: Construtor modificado para usar shared_ptr
 Rastreador::Rastreador(int id, int tipo, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
@@ -40,6 +64,7 @@ Rastreador::~Rastreador() {
 }
 
 unsigned int Rastreador::getId() {return id;}
+unsigned int Rastreador::getQtdAlertas() {return alertas.size();}
 
 std::string Rastreador::getTipoDeRastreador() 
 {
@@ -56,10 +81,7 @@ std::string Rastreador::getModelo() {return modelo;}
 
 EstadoDoRastreador Rastreador::getEstado() {return estado;}
 
-std::string Rastreador::getEstadoString() {
-    static const std::string estados[] = {"ATIVO", "INATIVO", "MANUTENCAO", "BLOQUEADO"};
-    return estados[estado];
-}
+std::string Rastreador::getEstadoString() {return (std::string[]){"ATIVO", "INATIVO", "MANUTENCAO", "BLOQUEADO"}[estado];}
 
 // MUDANÇA: Retornar ponteiro raw do shared_ptr para compatibilidade
 TipoDeComunicacao *Rastreador::getTipoDeComunicacaoPtr(){
@@ -121,4 +143,3 @@ Alerta* Rastreador::getAlerta(int subid)
     if(alertaInd == -1) return nullptr;
     return &alertas[alertaInd];
 }
-int Rastreador::getQtdAlertas() {return alertas.size();}

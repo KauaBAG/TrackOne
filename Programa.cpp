@@ -42,8 +42,6 @@ bool Programa::RemoverRastreador(unsigned int id)
 
 void Programa::ResetRastreadores() {rastreadores.clear();}
 
-void Programa::Relatorio(){} //implementar depois
-
 int Programa::PesquisarRastreador(unsigned int id)
 {
     for(int i = 0; i < rastreadores.size(); i++)
@@ -159,40 +157,12 @@ void Programa::JSON()
     json.close();
 }
 
-    void Programa::Carregar()
-    {
-        fstream Arquivo("ArquivoSalvo.txt", ios::in);
-
-        if(!Arquivo){
-            cout << "O aquivo não foi carregado!" << endl;
-        }
-
-        string linha;
-
-        while(getline(Arquivo, linha)){
-            cout << linha << endl;
-        }
-
-        Arquivo.close();
+void Programa::Carregar(){
+    for (auto &rastreador : rastreadores){
+        rastreador.getStringCarregar();
     }
+}
     
-    void Programa::carregarJSON()
-    {
-        fstream json("Arquivo.json", ios::in);
-
-        if(!json){
-            cout << "O aquivo não foi carregado!" << endl;
-        }
-
-        string linha;
-
-        while(getline(json, linha)){
-            cout << linha << endl;
-        }
-
-        json.close();
-    }
-
 Rastreador* Programa::getRastreador(int id) 
 {
     int rastInd = PesquisarRastreador(id);
