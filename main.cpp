@@ -377,6 +377,7 @@ int main() {
                             AlertaVelocidade alerta(subid, dataDeEmissao, localizacao, 
                                                     velocidadeExercida, velocidadeLimite);
                             cout << alerta.getString();
+                            //inserirAlerta(alerta);
                             break;
                         }
                         case 2:{
@@ -390,6 +391,7 @@ int main() {
                             AlertaBateria alerta(subid, dataDeEmissao, localizacao, 
                                                     foiViolada, foiDescarregada);
                             cout << alerta.getString();
+                            //inserirAlerta(alerta);
                             break;
                         }
                             
@@ -403,6 +405,7 @@ int main() {
                             getline(cin, zona);
                             AlertaZona alerta(subid, dataDeEmissao, localizacao, entrouZona, zona);
                             cout << alerta.getString();
+                            //inserirAlerta(alerta);
                             break;
                         }
                         
@@ -410,8 +413,6 @@ int main() {
                             cout << "Ta errado boy\n";
                             break;
                         }
-                        //Alerta alerta(tipoDeAlerta, subid, dataDeEmissao, localizacao);
-                        //cout << alerta.getString();
                         
                         break;
                     }
@@ -422,17 +423,48 @@ int main() {
                     }
                     case 3: {
                         cout << "Exibir Alerta\n";
-                        // Código para exibir alerta
+                        unsigned int id;
+                        cin >> id;
+                        unsigned int subid;
+                        cin >> subid;
+                        Alerta* selected = programa.getAlerta(id, subid);
+                        if(selected==nullptr) break;
+                        cout << "\n" << selected->getString() << "\n";
                         break;
                     }
                     case 4: {
                         cout << "Alterar Alerta\n";
-                        // Código para alterar alerta
+                        unsigned int id;
+                        cout << "Digite o Id do rastreador que se encontra o alerta: ";
+                        cin >> id;
+                        unsigned int subid;
+                        cout << "Digite o subId do Alerta que deseja alterar: ";
+                        cin >> subid;
+                        Alerta* alerta = programa.getAlerta(id, subid);
+                        cout << alerta->getString();
+                        
+                        int ParamAlterar = menu({"Tipo","Data de Emissao","Localização"}, "Parametros de Atualizaçao");
+                        
+                        switch(ParamAlterar) {
+                            case 1: { break;}
+                            case 2: {Data data; data = lerData("Qual a nova data de emissão"); alerta->setDataDeEmissao(data); break;}
+                            case 3: {string localizacao = ""; cout << "Digite a nova localização: "; 
+                                getline(cin, localizacao); alerta->setLocalizacao(localizacao); break;}
+                    
+                            //case 2: {cin >> string Marca; rastr->setModelo();}
+                            //case 3: {cin >> string Marca; rastr->setEstado();}
+                        };
                         break;
                     }
                     case 5: {
                         cout << "Remover Alerta\n";
-                        // Código para remover alerta
+                        unsigned int id;
+                        cout << "Digite o Id do rastreador que deseja excluir o alerta: ";
+                        cin >> id;
+                        unsigned int subid;
+                        cout << "Digite o subId do Alerta que deseja excluir: ";
+                        cin >> subid;
+                        programa.RemoverAlerta(id, subid);
                         break;
                     }
                     case 6: {
