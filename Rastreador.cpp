@@ -40,6 +40,7 @@ Rastreador::~Rastreador() {
 }
 
 unsigned int Rastreador::getId() {return id;}
+unsigned int Rastreador::getQtdAlertas() {return alertas.size();}
 
 std::string Rastreador::getTipoDeRastreador() 
 {

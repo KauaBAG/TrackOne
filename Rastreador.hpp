@@ -43,6 +43,7 @@ public:
     
     // Getters
     unsigned int getId();
+    unsigned int getQtdAlertas();
     std::string getTipoDeRastreador();
     std::string getMarca();
     std::string getModelo();

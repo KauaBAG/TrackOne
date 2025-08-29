@@ -42,8 +42,6 @@ bool Programa::RemoverRastreador(unsigned int id)
 
 void Programa::ResetRastreadores() {rastreadores.clear();}
 
-void Programa::Relatorio(){} //implementar depois
-
 int Programa::PesquisarRastreador(unsigned int id)
 {
     for(int i = 0; i < rastreadores.size(); i++)
