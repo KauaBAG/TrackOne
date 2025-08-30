@@ -26,6 +26,7 @@ public:
     int InserirRastreador(Rastreador& rastreador);
     Rastreador* getRastreador(int id);
     string ListarRastreadores();
+    string ListarAlertas();
     void AlterarRastreador(Rastreador RastreadorAtualizado);
     bool RemoverRastreador(unsigned int id);
     void contadorTipo();

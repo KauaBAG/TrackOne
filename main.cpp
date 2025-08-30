@@ -422,7 +422,9 @@ int main() {
                     }
                     case 2: {
                         cout << "Listar Alertas\n";
-                        // Código para listar alertas
+                        programa.ListarAlertas();
+                        cout << "\n# Pressione qualquer tecla para continuar";
+                        getchar();
                         break;
                     }
                     case 3: {
@@ -454,9 +456,6 @@ int main() {
                             case 2: {Data data; data = lerData("Qual a nova data de emissão"); alerta->setDataDeEmissao(data); break;}
                             case 3: {string localizacao = ""; cout << "Digite a nova localização: "; 
                                 getline(cin, localizacao); alerta->setLocalizacao(localizacao); break;}
-                    
-                            //case 2: {cin >> string Marca; rastr->setModelo();}
-                            //case 3: {cin >> string Marca; rastr->setEstado();}
                         };
                         break;
                     }
@@ -468,7 +467,7 @@ int main() {
                         unsigned int subid;
                         cout << "Digite o subId do Alerta que deseja excluir: ";
                         cin >> subid;
-                        //programa.RemoverAlerta(id, subid);
+                        programa.getRastreador(id)->deleteAlerta(subid);
                         break;
                     }
                     case 6:

@@ -21,6 +21,19 @@ string Programa::ListarRastreadores()
     return ans;
 }
 
+string Programa::ListarAlertas()
+{
+    string ans = "";
+
+    for (int i = 0; i < rastreadores.size(); i++)
+    {
+        ans += rastreadores[i].getId() + "\n";
+        ans += rastreadores[i].getAlertasList() + "\n";
+    }
+    
+    return ans;
+}
+
 void Programa::AlterarRastreador(Rastreador RastreadorAtualizado)
 {
     int i = PesquisarRastreador(RastreadorAtualizado.getId());
