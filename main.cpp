@@ -247,7 +247,7 @@ int main() {
     cout << "=== Sistema de Rastreamento Iniciado ===\n";
     
     while(true) {
-        int escolhaPrincipal = menu({"Gerenciar Rastreados", "Gerenciar Alertas", "Sair"}, "MENU PRINCIPAL");
+        int escolhaPrincipal = menu({"Gerenciar Rastreados", "Gerenciar Alertas", "Mostrar Relatório", "Sair"}, "MENU PRINCIPAL");
         
         switch (escolhaPrincipal) {
         case 1: {
@@ -255,7 +255,7 @@ int main() {
     
             while (!voltarAoMenuPrincipal) {
                 int escolhaRastreados = menu({"Cadastrar Rastreador", "Listar Rastreadores", "Exibir Rastreador", 
-                                            "Alterar Rastreador", "Remover Rastreador", "Exibir Relatório", "Voltar"}, "GERENCIAR RASTREADOS");
+                                            "Alterar Rastreador", "Remover Rastreador", "Voltar"}, "GERENCIAR RASTREADOS");
                 
                 switch (escolhaRastreados) {
                     case 1: {
@@ -329,11 +329,6 @@ int main() {
                         break;
                     }
                     case 6: {
-                        cout << "Exibir Relatório\n";
-                        // Código para exibir relatório
-                        break;
-                    }
-                    case 7: {
                         cout << "Voltando ao menu principal...\n";
                         voltarAoMenuPrincipal = true; // Sinaliza para sair do loop
                         break;
@@ -353,7 +348,7 @@ int main() {
             while (!voltarAoMenuPrincipal) {
                 cout << "Gerenciar Alertas\n";
                 int escolhaAlertas = menu({"Cadastrar Alerta", "Listar Alertas", "Exibir Alerta", 
-                                            "Alterar Alerta", "Remover Alerta", "Exibir Relatório", "Voltar"}, "GERENCIAR ALERTAS");
+                                            "Alterar Alerta", "Remover Alerta", "Voltar"}, "GERENCIAR ALERTAS");
                 switch (escolhaAlertas) {
                     case 1: {
                         cout << "Cadastrar Alerta\n";
@@ -476,12 +471,7 @@ int main() {
                         //programa.RemoverAlerta(id, subid);
                         break;
                     }
-                    case 6: {
-                        cout << "Exibir Relatório\n";
-                        // Código para exibir relatório de alertas
-                        break;
-                    }
-                    case 7:
+                    case 6:
                         cout << "Voltando ao menu principal...\n";
                         voltarAoMenuPrincipal = true; // Sinaliza para sair do loop
                         break; // Voltar ao menu principal
@@ -493,6 +483,12 @@ int main() {
                 break;    
             }   
         case 3:
+            cout << "Mostrar Relatório Geral\n";
+            programa.Relatorio();
+            cout << "\n# Pressione qualquer tecla para continuar";
+            getchar();
+            break;
+        case 4:
             programa.Salvar();
             programa.JSON();
             cout << "Encerrando programa...\n";
