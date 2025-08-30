@@ -2,7 +2,7 @@
 
 std::string RastreadorPessoal::getString()
 {
-    return Rastreador::getString() + ", nome: " + nome + ", telefone: " + telefone + ", documento " + documento;
+    return Rastreador::getString() + ",\n    Nome: " + nome + ",\n    Telefone: " + telefone + ",\n    Documento " + documento;
 }
 std::string RastreadorPessoal::getStringJSON()
 {

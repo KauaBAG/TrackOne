@@ -17,6 +17,7 @@
 #include <iomanip>
 #include <vector>
 #include <limits>
+#include <typeinfo>
 
 using namespace std;
 
@@ -56,10 +57,10 @@ Data lerData(string mensagem) {
     int ano;
     cout << mensagem << " (dia mes ano): ";
     
-    cin >> dia >> mes >> ano;
+    dia = lerInteiro("Dia: ");
+    mes = lerInteiro("Mês: ");
+    ano = lerInteiro("Ano: ");
       
-    limparBuffer();
-    
     return Data(dia, mes, ano);
 }
 
@@ -95,7 +96,8 @@ TipoDeComunicacao* criarComunicacaoGsm() {
 
     bool fallback;
     cout << "\nPossui fallback?  \n0. Nao \n1. Sim\n";
-    int i = lerInteiro("Resposta: ");
+    int i;
+    do { i = lerInteiro("Resposta: "); } while (i < 0 || i > 1); 
     fallback = (i == 1);
 
     TipoDeComunicacao* gsm = new Gsm(banda, fallback);
@@ -210,7 +212,8 @@ void criarRastreadorCarga(const RastreadorBase& base, TipoDeComunicacao* comunic
     
     bool fragil;
     cout << "\nÉ fragil?  \n0. Nao \n1. Sim\n";
-    int i = lerInteiro("Resposta: ");
+    int i;
+    do { i = lerInteiro("Resposta: "); } while (i < 0 || i > 1);
     fragil = (i == 1);
     
     RastreadorCarga rastr = RastreadorCarga(base.id, base.marca, base.modelo, comunicacao, 
@@ -289,6 +292,7 @@ int main() {
                     }
                     case 3: {
                         cout << "Exibir Rastreador\n";
+                        cout << "Digite o Id do rastreador que deseja exibir: ";
                         unsigned int id;
                         cin >> id;
                         Rastreador* selected = programa.getRastreador(id);
@@ -368,6 +372,10 @@ int main() {
                         {
                         case 1: {
                             float velocidadeExercida = 0, velocidadeLimite = 0;
+                            if (velocidadeExercida < velocidadeLimite) {
+                                cout << "Velocidade exercida não pode ser menor que a velocidade limite. Tente novamente.\n";
+                                break;
+                            }
                             cout << "Digite a velocidade exercida: ";
                             cin >> velocidadeExercida;
                             cout << "Digite a velocidade limite: ";
@@ -378,6 +386,7 @@ int main() {
                                                     velocidadeExercida, velocidadeLimite);
                             cout << alerta.getString();
                             //inserirAlerta(alerta);
+                            
                             break;
                         }
                         case 2:{
@@ -464,7 +473,7 @@ int main() {
                         unsigned int subid;
                         cout << "Digite o subId do Alerta que deseja excluir: ";
                         cin >> subid;
-                        programa.RemoverAlerta(id, subid);
+                        //programa.RemoverAlerta(id, subid);
                         break;
                     }
                     case 6: {

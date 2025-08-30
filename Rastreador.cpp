@@ -5,11 +5,11 @@
 
 std::string Rastreador::getString()
 {
-    return getTipoDeRastreador() + " \nid: " + std::to_string(id) + 
-        ", \nmarca: " + marca + ", \nmodelo: " + modelo + 
+    return getTipoDeRastreador() + "\n    Id: " + std::to_string(id) + 
+        ",\n    Marca: " + marca + ", \n    Modelo: " + modelo + 
         ", \n" + comunicacao->getString() + 
-        ", \nestado: " + getEstadoString() +
-        ", \ndata de ativacao: " + ativacao.getString();
+        ", \n    Estado: " + getEstadoString() +
+        ", \n    Data de ativacao: " + ativacao.getString();
 }
 
 std::string Rastreador::getStringJSON()
