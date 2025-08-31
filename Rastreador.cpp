@@ -118,3 +118,4 @@ Alerta* Rastreador::getAlerta(int subid)
     if(alertaInd == -1) return nullptr;
     return &alertas[alertaInd];
 }
+int Rastreador::getQtdAlertas() {return alertas.size();}
