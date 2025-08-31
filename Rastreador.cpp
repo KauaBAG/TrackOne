@@ -104,7 +104,7 @@ void Rastreador::deleteAlerta(int subid)
 std::string Rastreador::getAlertasList()
 {
     std::string l = "";
-    for(int i = 0; i < alertas.size(); i++) l += alertas[i].getString() + '\n';
+    for(int i = 0; i < alertas.size(); i++) {l += alertas[i].getString() + '\n';}
     return l;
 }
 
@@ -115,7 +115,7 @@ void Rastreador::resetAlertas()
 
 Alerta* Rastreador::getAlerta(int subid) 
 {
-    int alertaInd = searchAlerta(id);
+    int alertaInd = searchAlerta(subid);
     if(alertaInd == -1) return nullptr;
     return &alertas[alertaInd];
 }

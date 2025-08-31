@@ -16,8 +16,8 @@ public:
         }
     std::string getString() 
     {
-        return AlertaBateria::getString() + ", violada: " + 
-            (foiViolada?"sim":"nao") + ", descarregada: " + (foiDescarregada?"sim":"nao");
+        return AlertaBateria::getString() + ",\n    Violada: " + 
+            (foiViolada?"Sim":"Nao") + ",\n    Descarregada: " + (foiDescarregada?"Sim":"Nao");
     }
 
     bool getFoiViolada() {return foiViolada;}

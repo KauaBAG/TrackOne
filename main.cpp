@@ -346,7 +346,6 @@ int main() {
             bool voltarAoMenuPrincipal = false;
     
             while (!voltarAoMenuPrincipal) {
-                cout << "Gerenciar Alertas\n";
                 int escolhaAlertas = menu({"Cadastrar Alerta", "Listar Alertas", "Exibir Alerta", 
                                             "Alterar Alerta", "Remover Alerta", "Voltar"}, "GERENCIAR ALERTAS");
                 switch (escolhaAlertas) {
@@ -355,6 +354,8 @@ int main() {
                         
                         unsigned int tipoDeAlerta = menu({"Velocidade", "Bateria", "Zona"}, "Tipos de Alerta");
                         
+                        unsigned int id = static_cast<unsigned int>(lerInteiro("Digite o ID do rastreador para associar o alerta: "));
+                        Rastreador* rastreador = programa.getRastreador(id);
                         unsigned int subid = static_cast<unsigned int>(lerInteiro("Digite o subid do alerta: "));
                         
                         Data dataDeEmissao = lerData("Digite a data de emissão do alerta");
@@ -379,8 +380,7 @@ int main() {
                             
                             AlertaVelocidade alerta(subid, dataDeEmissao, localizacao, 
                                                     velocidadeExercida, velocidadeLimite);
-                            cout << alerta.getString();
-                            //inserirAlerta(alerta);
+                            rastreador->updateAlerta(alerta);
                             
                             break;
                         }
@@ -394,8 +394,7 @@ int main() {
                             foiDescarregada = (i == 1);
                             AlertaBateria alerta(subid, dataDeEmissao, localizacao, 
                                                     foiViolada, foiDescarregada);
-                            cout << alerta.getString();
-                            //inserirAlerta(alerta);
+                            rastreador->updateAlerta(alerta);
                             break;
                         }
                             
@@ -408,8 +407,7 @@ int main() {
                             cout << "Digite o nome da zona: ";
                             getline(cin, zona);
                             AlertaZona alerta(subid, dataDeEmissao, localizacao, entrouZona, zona);
-                            cout << alerta.getString();
-                            //inserirAlerta(alerta);
+                            rastreador->updateAlerta(alerta);
                             break;
                         }
                         
@@ -422,7 +420,7 @@ int main() {
                     }
                     case 2: {
                         cout << "Listar Alertas\n";
-                        programa.ListarAlertas();
+                        cout << programa.ListarAlertas();
                         cout << "\n# Pressione qualquer tecla para continuar";
                         getchar();
                         break;
@@ -430,8 +428,10 @@ int main() {
                     case 3: {
                         cout << "Exibir Alerta\n";
                         unsigned int id;
+                        cout << "Digite o Id do rastreador que se encontra o alerta: ";
                         cin >> id;
                         unsigned int subid;
+                        cout << "Digite o subId do Alerta que deseja exibir: ";
                         cin >> subid;
                         Alerta* selected = programa.getAlerta(id, subid);
                         if(selected==nullptr) break;

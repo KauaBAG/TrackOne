@@ -27,7 +27,7 @@ string Programa::ListarAlertas()
 
     for (int i = 0; i < rastreadores.size(); i++)
     {
-        ans += rastreadores[i].getId() + "\n";
+        ans += "Id: " + to_string(rastreadores[i].getId()) + "\n";
         ans += rastreadores[i].getAlertasList() + "\n";
     }
     
@@ -62,7 +62,7 @@ int Programa::PesquisarRastreador(unsigned int id)
     return -1;
 }
 void Programa::contadorTipo(){
-
+        qtda = 0; qtdc = 0; qtdp = 0; qtdv = 0;
         for(auto &rastreador : rastreadores){
             if(rastreador.getTipoDeRastreador() == "Rastreador de Carga"){
                 qtdc++;
@@ -71,11 +71,13 @@ void Programa::contadorTipo(){
             }else if(rastreador.getTipoDeRastreador() == "Rastreador Pessoal"){
                 qtdp++;
             }
-            qtda = rastreador.getQtdAlertas();
+            qtda += rastreador.getQtdAlertas();
         }
     }
     
     void Programa::Relatorio(){
+
+        contadorTipo();
 
         cout << "Rastreadores cadastrados: " << rastreadores.size() << endl;
         cout << "Rastreadores de carga: " << qtdc << endl;
@@ -83,14 +85,14 @@ void Programa::contadorTipo(){
         cout << "Rastreadores veiculares: " << qtdv << endl;
         cout << "Rastreadores com alerta: " << qtda << endl;
 
-        int escolha;
-        int escolha2;
-        cin >> escolha;
-        cin.ignore();
-
-        cout << "1 - Consultar rastreadores: " << endl;
+        cout << "\n1 - Consultar rastreadores: " << endl;
         cout << "2 - Consultar rastreadores por tipo: " << endl;
         cout << "3 - Consultar rastreadores com alertas" << endl;
+
+        cout << "Escolha uma opção: " << endl;
+        int escolha;
+        cin >> escolha;
+        cin.ignore();
 
         switch(escolha){
 
@@ -101,21 +103,29 @@ void Programa::contadorTipo(){
                 cout << "1 - Rastreador de carga " << endl;
                 cout << "2 - Rastreador pessoal " << endl;
                 cout << "3 - Rastreador veicular " << endl;
+
+                cout << "Escolha o tipo de rastreador: " << endl;
+                int escolha2;
+                cin >> escolha2;
+                cin.ignore();
                 
                 for (auto &rastreador : rastreadores){
-                switch(escolha2){
+                    switch(escolha2){
                         
                         case 1:
                         if (rastreador.getTipoDeRastreador() == "Rastreador de Carga"){
-                        cout << rastreador.getString();
+                            cout << rastreador.getString();
+                            break;
                         }
                         case 2:
                         if (rastreador.getTipoDeRastreador() == "Rastreador Pessoal"){
                             cout << rastreador.getString();
+                            break;
                         }
                         case 3:
                         if (rastreador.getTipoDeRastreador() == "Rastreador Veicular"){
                             cout << rastreador.getString();
+                            break;
                         }
                     }
                 }
