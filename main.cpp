@@ -17,6 +17,7 @@
 #include <iomanip>
 #include <vector>
 #include <limits>
+#include <typeinfo>
 
 using namespace std;
 
@@ -54,12 +55,12 @@ int lerInteiro(const string& mensagem) {
 Data lerData(string mensagem) {
     short dia, mes;
     int ano;
-    cout << mensagem << " (dia mes ano): ";
+    cout << mensagem << " (dia mes ano)\n";
     
-    cin >> dia >> mes >> ano;
+    dia = lerInteiro("Dia: ");
+    mes = lerInteiro("Mês: ");
+    ano = lerInteiro("Ano: ");
       
-    limparBuffer();
-    
     return Data(dia, mes, ano);
 }
 
@@ -125,7 +126,7 @@ TipoDeComunicacao* criarComunicacaoRfid() {
     string type;
     cout << "Digite o tipo de frequencia: ";
     getline(cin, type);
-    
+
     TipoDeComunicacao* rfid = new Rfid(freq, type);
     
     return rfid;
@@ -202,7 +203,7 @@ RastreadorVeicular* criarRastreadorVeicular(const RastreadorBase& base, TipoDeCo
 
 RastreadorCarga* criarRastreadorCarga(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
     cout << "\n=== Criando Rastreador de Carga ===\n";
-    
+
     string tipoCarga, remetente, destinatario;
     cout << "Qual o tipo de carga: ";
     getline(cin, tipoCarga);
@@ -291,7 +292,7 @@ int main() {
     cout << "=== Sistema de Rastreamento Iniciado ===\n";
     
     while(true) {
-        int escolhaPrincipal = menu({"Gerenciar Rastreados", "Gerenciar Alertas", "Sair"}, "MENU PRINCIPAL");
+        int escolhaPrincipal = menu({"Gerenciar Rastreados", "Gerenciar Alertas", "Mostrar Relatório", "Sair"}, "MENU PRINCIPAL");
         
         switch (escolhaPrincipal) {
         case 1: {
@@ -299,7 +300,7 @@ int main() {
     
             while (!voltarAoMenuPrincipal) {
                 int escolhaRastreados = menu({"Cadastrar Rastreador", "Listar Rastreadores", "Exibir Rastreador", 
-                                            "Alterar Rastreador", "Remover Rastreador", "Exibir Relatório", "Voltar"}, "GERENCIAR RASTREADOS");
+                                            "Alterar Rastreador", "Remover Rastreador", "Voltar"}, "GERENCIAR RASTREADOS");
                 
                 switch (escolhaRastreados) {
                     case 1: {
@@ -318,6 +319,7 @@ int main() {
                     }
                     case 3: {
                         cout << "Exibir Rastreador\n";
+                        cout << "Digite o Id do rastreador que deseja exibir: ";
                         unsigned int id;
                         cin >> id;
                         Rastreador* selected = programa.getRastreador(id);
@@ -354,11 +356,6 @@ int main() {
                         break;
                     }
                     case 6: {
-                        cout << "Exibir Relatório\n";
-                        // Código para exibir relatório
-                        break;
-                    }
-                    case 7: {
                         cout << "Voltando ao menu principal...\n";
                         voltarAoMenuPrincipal = true; // Sinaliza para sair do loop
                         break;
@@ -373,62 +370,149 @@ int main() {
         }
     
         case 2: {
-            cout << "Gerenciar Alertas\n";
-            int escolhaAlertas = menu({"Cadastrar Alerta", "Listar Alertas", "Exibir Alerta", 
-                                          "Alterar Alerta", "Remover Alerta", "Exibir Relatório", "Voltar"}, "GERENCIAR ALERTAS");
-            switch (escolhaAlertas) {
-                case 1: {
-                    cout << "Cadastrar Alerta\n";
+            bool voltarAoMenuPrincipal = false;
+    
+            while (!voltarAoMenuPrincipal) {
+                int escolhaAlertas = menu({"Cadastrar Alerta", "Listar Alertas", "Exibir Alerta", 
+                                            "Alterar Alerta", "Remover Alerta", "Voltar"}, "GERENCIAR ALERTAS");
+                switch (escolhaAlertas) {
+                    case 1: {
+                        cout << "Cadastrar Alerta\n";
+                        
+                        unsigned int tipoDeAlerta = menu({"Velocidade", "Bateria", "Zona"}, "Tipos de Alerta");
+                        
+                        unsigned int id = static_cast<unsigned int>(lerInteiro("Digite o ID do rastreador para associar o alerta: "));
+                        Rastreador* rastreador = programa.getRastreador(id);
+                        unsigned int subid = static_cast<unsigned int>(lerInteiro("Digite o subid do alerta: "));
+                        Data dataDeEmissao = lerData("Digite a data de emissão do alerta");
                     
-                    unsigned int tipoDeAlerta = menu({"Velocidade", "Bateria", "Zona"}, "Tipos de Alerta");
-                    
-                    unsigned int subid = static_cast<unsigned int>(lerInteiro("Digite o subid do alerta: "));
-                    
-                    Data dataDeEmissao = lerData("Digite a data de emissão do alerta");
-                    
-                    string localizacao;
-                    cout << "Digite a localização do alerta: ";
-                    getline(cin, localizacao);
-            
-                    //Alerta alerta(tipoDeAlerta, subid, dataDeEmissao, localizacao);
-                    //cout << alerta.getString();
-                    
-                    break;
-                }
-                case 2: {
-                    cout << "Listar Alertas\n";
-                    // Código para listar alertas
-                    break;
-                }
-                case 3: {
-                    cout << "Exibir Alerta\n";
-                    // Código para exibir alerta
-                    break;
-                }
-                case 4: {
-                    cout << "Alterar Alerta\n";
-                    // Código para alterar alerta
-                    break;
-                }
-                case 5: {
-                    cout << "Remover Alerta\n";
-                    // Código para remover alerta
-                    break;
-                }
-                case 6: {
-                    cout << "Exibir Relatório\n";
-                    // Código para exibir relatório de alertas
-                    break;
-                }
-                case 7:
-                    break; // Voltar ao menu principal
-                default:
-                    cout << "Opção inválida. Tente novamente.\n";
-                    break;
-                }
-            break;    
-            }    
+                        string localizacao;
+                        cout << "Digite a localização do alerta: ";
+                        getline(cin, localizacao);
+                        
+                        Alerta* alerta;
+                        switch (tipoDeAlerta)
+                        {
+                        case 1: {
+                            float velocidadeExercida = 0, velocidadeLimite = 0;
+                            cout << "Digite a velocidade exercida: ";
+                            cin >> velocidadeExercida;
+                            cout << "Digite a velocidade limite: ";
+                            cin >> velocidadeLimite;
+                            // if (velocidadeExercida < velocidadeLimite) {
+                            //     cout << "Velocidade exercida não pode ser menor que a velocidade limite. Tente novamente.\n";
+                            //     break;
+                            // }     ===== ALERTA VAZIA!!! COISAS RUINS
+                            limparBuffer();
+                            
+                            alerta = new AlertaVelocidade(subid, dataDeEmissao, localizacao, velocidadeExercida, velocidadeLimite);
+                            break;
+                        }
+                        case 2:{
+                            bool foiViolada = false, foiDescarregada = false;
+                            cout << "\nFoi violada?  \n0. Nao \n1. Sim\n";
+                            int i = lerInteiro("Resposta: ");
+                            foiViolada = (i == 1);
+                            cout << "\nFoi descarregada?  \n0. Nao \n1. Sim\n";
+                            i = lerInteiro("Resposta: ");
+                            foiDescarregada = (i == 1);
+
+                            alerta = new AlertaBateria(subid, dataDeEmissao, localizacao, foiViolada, foiDescarregada);
+                            break;
+                        }
+                            
+                        case 3:{
+                            bool entrouZona = false;
+                            cout << "\nEntrou na zona?  \n0. Nao \n1. Sim\n";
+                            int i = lerInteiro("Resposta: ");
+                            entrouZona = (i == 1);
+                            string zona;
+                            cout << "Digite o nome da zona: ";
+                            getline(cin, zona);
+
+                            alerta = new AlertaZona(subid, dataDeEmissao, localizacao, entrouZona, zona);
+                            break;
+                        }
+                        
+                        default:
+                            cout << "Ta errado boy\n";
+                            break;
+                        }
+                        rastreador->updateAlerta(alerta);
+                        
+                        break;
+                    }
+                    case 2: {
+                        cout << "Listar Alertas\n";
+                        cout << programa.ListarAlertas();
+                        cout << "\n# Pressione qualquer tecla para continuar";
+                        getchar();
+                        break;
+                    }
+                    case 3: {
+                        cout << "Exibir Alerta\n";
+                        unsigned int id;
+                        cout << "Digite o Id do rastreador que se encontra o alerta: ";
+                        cin >> id;
+                        unsigned int subid;
+                        cout << "Digite o subId do Alerta que deseja exibir: ";
+                        cin >> subid;
+                        Alerta* selected = programa.getAlerta(id, subid);
+                        if(selected==nullptr) break;
+                        cout << "\n" << selected->getString() << "\n";
+                        break;
+                    }
+                    case 4: {
+                        cout << "Alterar Alerta\n";
+                        unsigned int id;
+                        cout << "Digite o Id do rastreador que se encontra o alerta: ";
+                        cin >> id;
+                        unsigned int subid;
+                        cout << "Digite o subId do Alerta que deseja alterar: ";
+                        cin >> subid;
+                        Alerta* alerta = programa.getAlerta(id, subid);
+                        cout << alerta->getString();
+                        
+                        int ParamAlterar = menu({"Tipo","Data de Emissao","Localização"}, "Parametros de Atualizaçao");
+                        
+                        switch(ParamAlterar) {
+                            case 1: { break;}
+                            case 2: {Data data; data = lerData("Qual a nova data de emissão"); alerta->setDataDeEmissao(data); break;}
+                            case 3: {string localizacao = ""; cout << "Digite a nova localização: "; 
+                                getline(cin, localizacao); alerta->setLocalizacao(localizacao); break;}
+                        };
+                        break;
+                    }
+                    case 5: {
+                        cout << "Remover Alerta\n";
+                        unsigned int id;
+                        cout << "Digite o Id do rastreador que deseja excluir o alerta: ";
+                        cin >> id;
+                        unsigned int subid;
+                        cout << "Digite o subId do Alerta que deseja excluir: ";
+                        cin >> subid;
+                        programa.getRastreador(id)->deleteAlerta(subid);
+                        cout << "Alerta removido com sucesso!\n";
+                        break;
+                    }
+                    case 6:
+                        cout << "Voltando ao menu principal...\n";
+                        voltarAoMenuPrincipal = true; // Sinaliza para sair do loop
+                        break; // Voltar ao menu principal
+                    default:
+                        cout << "Opção inválida. Tente novamente.\n";
+                        break;
+                    }
+                }    
+                break;    
+            }   
         case 3:
+            cout << "\n--- RELATóRIO GERAL ---\n";
+            programa.Relatorio();
+            cout << "\n# Pressione qualquer tecla para continuar";
+            getchar();
+            break;
+        case 4:
             programa.Salvar();
             programa.JSON();
             cout << "Encerrando programa...\n";

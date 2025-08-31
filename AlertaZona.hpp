@@ -17,7 +17,7 @@ public:
 
     std::string getString()
     {
-        return Alerta::getString() + ", rastreador " + (inout?"entrou":"saiu") + " de " + zona;
+        return Alerta::getString() + ",\n    Rastreador " + (inout?"Entrou":"Saiu") + " de " + zona;
     }
 
     bool getInout() {return inout;};

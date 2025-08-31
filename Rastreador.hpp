@@ -43,6 +43,7 @@ public:
     
     // Getters
     unsigned int getId();
+    unsigned int getQtdAlertas();
     std::string getTipoDeRastreador();
     std::string getMarca();
     std::string getModelo();
@@ -64,5 +65,4 @@ public:
     std::string getAlertasList();
     void resetAlertas();
     Alerta* getAlerta(int subid);
-    int getQtdAlertas();
 };

@@ -2,9 +2,9 @@
 
 std::string RastreadorCarga::getString()
 {
-    return Rastreador::getString() + ", tipo de carga: " + tipoDeCarga + 
-        ", remetente: " + remetente + ", destinatario: " + destinatario +
-        (eFragil?", e Fragil":", nao e fragil"); 
+    return Rastreador::getString() + ",\n    Tipo de carga: " + tipoDeCarga + 
+        ",\n    Remetente: " + remetente + ",\n    Destinatario: " + destinatario +
+        (eFragil?",\n    É fragil":",\n    Não é fragil"); 
 }
 std::string RastreadorCarga::getStringJSON()
 {

@@ -5,11 +5,11 @@
 
 std::string Rastreador::getString()
 {
-    return getTipoDeRastreador() + " \nid: " + std::to_string(id) + 
-        ", \nmarca: " + marca + ", \nmodelo: " + modelo + 
+    return getTipoDeRastreador() + "\n    Id: " + std::to_string(id) + 
+        ",\n    Marca: " + marca + ", \n    Modelo: " + modelo + 
         ", \n" + comunicacao->getString() + 
-        ", \nestado: " + getEstadoString() +
-        ", \ndata de ativacao: " + ativacao.getString();
+        ", \n    Estado: " + getEstadoString() +
+        ", \n    Data de ativacao: " + ativacao.getString();
 }
 
 std::string Rastreador::getStringJSON()
@@ -41,6 +41,7 @@ Rastreador::~Rastreador() {
 }
 
 unsigned int Rastreador::getId() {return id;}
+unsigned int Rastreador::getQtdAlertas() {return alertas.size();}
 
 std::string Rastreador::getTipoDeRastreador() 
 {
@@ -118,8 +119,7 @@ void Rastreador::resetAlertas()
 
 Alerta* Rastreador::getAlerta(int subid) 
 {
-    int alertaInd = searchAlerta(id);
+    int alertaInd = searchAlerta(subid);
     if(alertaInd == -1) return nullptr;
     return alertas[alertaInd];
 }
-int Rastreador::getQtdAlertas() {return alertas.size();}
