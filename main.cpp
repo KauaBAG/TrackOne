@@ -189,10 +189,10 @@ void criarRastreadorVeicular(const RastreadorBase& base, TipoDeComunicacao* comu
     
     Placa placa(identificador, localDeEmissao, tipo);
 
-    RastreadorVeicular rastr(base.id, base.marca, base.modelo, comunicacao, 
+    RastreadorVeicular *rastr = new RastreadorVeicular(base.id, base.marca, base.modelo, comunicacao, 
                                base.estado, base.dataDeAtivacao, tipoDeCarro, 
                                marcaDoCarro, modeloDoCarro, placa, temCamera);
-    cout << "\n" << rastr.getString() << "\n";
+    cout << "\n" << rastr->getString() << "\n";
     
     programa.InserirRastreador(rastr);
 }
@@ -213,10 +213,10 @@ void criarRastreadorCarga(const RastreadorBase& base, TipoDeComunicacao* comunic
     int i = lerInteiro("Resposta: ");
     fragil = (i == 1);
     
-    RastreadorCarga rastr = RastreadorCarga(base.id, base.marca, base.modelo, comunicacao, 
+    RastreadorCarga *rastr = new RastreadorCarga(base.id, base.marca, base.modelo, comunicacao, 
                         base.estado, base.dataDeAtivacao, tipoCarga, 
                         remetente, destinatario, fragil);
-    cout << "\n" << rastr.getString() << "\n";
+    cout << "\n" << rastr->getString() << "\n";
         
     programa.InserirRastreador(rastr);
     cout << "Rastreador inserido com sucesso!\n";
@@ -233,9 +233,9 @@ void criarRastreadorPessoal(const RastreadorBase& base, TipoDeComunicacao* comun
     cout << "Digite seu documento: ";
     getline(cin, documento);
     
-    RastreadorPessoal rastr(base.id, base.marca, base.modelo, comunicacao, 
+    RastreadorPessoal* rastr = new RastreadorPessoal(base.id, base.marca, base.modelo, comunicacao, 
                               base.estado, base.dataDeAtivacao, nome, telefone, documento);
-    cout << "\n" << rastr.getString() << "\n";
+    cout << "\n" << rastr->getString() << "\n";
     
     programa.InserirRastreador(rastr);
 }
