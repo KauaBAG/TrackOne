@@ -35,6 +35,7 @@ public:
     void ResetRastreadores();
     
     int PesquisarRastreador(unsigned int id);
+    vector<int> PesquisarRastreadoresComInicio(unsigned int id);
     int PesquisarAlerta(unsigned int id, unsigned int subid);
 
     void Salvar();
