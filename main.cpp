@@ -377,12 +377,17 @@ int main() {
                                             "Alterar Alerta", "Remover Alerta", "Voltar"}, "GERENCIAR ALERTAS");
                 switch (escolhaAlertas) {
                     case 1: {
-                        cout << "Cadastrar Alerta\n";
-                        
+                        cout << "\nCadastrar Alerta\n";
+                        if (programa.getQuantidadeDeRastreadores() == 0) {
+                            cout << "Nenhum rastreador cadastrado, portanto, não há como cadastrar alertas!\n";
+                            break;
+                        }
                         unsigned int tipoDeAlerta = menu({"Velocidade", "Bateria", "Zona"}, "Tipos de Alerta");
                         
                         unsigned int id = static_cast<unsigned int>(lerInteiro("Digite o ID do rastreador para associar o alerta: "));
+
                         Rastreador* rastreador = programa.getRastreador(id);
+                        if(rastreador==nullptr) {cout << "Esse rastreador não está cadastrado!"; break;}
                         unsigned int subid = static_cast<unsigned int>(lerInteiro("Digite o subid do alerta: "));
                         Data dataDeEmissao = lerData("Digite a data de emissão do alerta");
                     
@@ -443,34 +448,53 @@ int main() {
                         break;
                     }
                     case 2: {
-                        cout << "Listar Alertas\n";
+                        cout << "\nListar Alertas\n";
+                        if (programa.getQuantidadeDeRastreadores() == 0) {
+                            cout << "Nenhum rastreador cadastrado, portanto, não há alertas\n";
+                            break;
+                        }
+                        if (programa.getQuantidadeDeAlertas() == 0) {
+                            cout << "Nenhum alerta cadastrado\n";
+                            break;
+                        }
                         cout << programa.ListarAlertas();
                         cout << "\n# Pressione qualquer tecla para continuar";
                         getchar();
                         break;
                     }
                     case 3: {
-                        cout << "Exibir Alerta\n";
+                        cout << "\nExibir Alerta\n";
+                        if (programa.getQuantidadeDeRastreadores() == 0) {
+                            cout << "Nenhum rastreador cadastrado, portanto, não há como cadastrar alertas!\n";
+                            break;
+                        }
                         unsigned int id;
                         cout << "Digite o Id do rastreador que se encontra o alerta: ";
                         cin >> id;
+                        if(programa.getRastreador(id)==nullptr) {cout << "Esse rastreador não está cadastrado!\n"; break;}
                         unsigned int subid;
                         cout << "Digite o subId do Alerta que deseja exibir: ";
                         cin >> subid;
                         Alerta* selected = programa.getAlerta(id, subid);
-                        if(selected==nullptr) break;
+                        if(selected==nullptr) {cout << "Não existe alerta com esse subid"; break;}
                         cout << "\n" << selected->getString() << "\n";
                         break;
                     }
                     case 4: {
-                        cout << "Alterar Alerta\n";
+                        cout << "\nAlterar Alerta\n";
+                        if (programa.getQuantidadeDeRastreadores() == 0) {
+                            cout << "Nenhum rastreador cadastrado, portanto, não há como cadastrar alertas!\n";
+                            break;
+                        }
                         unsigned int id;
                         cout << "Digite o Id do rastreador que se encontra o alerta: ";
                         cin >> id;
+                        if(programa.getRastreador(id)==nullptr) {cout << "Esse rastreador não está cadastrado!\n"; break;}
                         unsigned int subid;
                         cout << "Digite o subId do Alerta que deseja alterar: ";
                         cin >> subid;
                         Alerta* alerta = programa.getAlerta(id, subid);
+                        if(alerta==nullptr) {cout << "Não existe alerta com esse subid"; break;}
                         cout << alerta->getString();
                         
                         int ParamAlterar = menu({"Tipo","Data de Emissao","Localização"}, "Parametros de Atualizaçao");
@@ -484,13 +508,19 @@ int main() {
                         break;
                     }
                     case 5: {
-                        cout << "Remover Alerta\n";
+                        cout << "\nRemover Alerta\n";
+                        if (programa.getQuantidadeDeRastreadores() == 0) {
+                            cout << "Nenhum rastreador cadastrado, portanto, não há como cadastrar alertas!\n";
+                            break;
+                        }
                         unsigned int id;
                         cout << "Digite o Id do rastreador que deseja excluir o alerta: ";
                         cin >> id;
+                        if(programa.getRastreador(id)==nullptr) {cout << "Esse rastreador não está cadastrado!\n"; break;}
                         unsigned int subid;
                         cout << "Digite o subId do Alerta que deseja excluir: ";
                         cin >> subid;
+                        if(programa.getAlerta(id, subid)==nullptr) {cout << "Não existe alerta com esse subid"; break;}
                         programa.getRastreador(id)->deleteAlerta(subid);
                         cout << "Alerta removido com sucesso!\n";
                         break;
