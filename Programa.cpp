@@ -75,13 +75,13 @@ bool ABeginsWithB(string a, string b)
     for(int i = 0; i < b.size(); i++) if(a[i]!=b[i]) return false;
     return true;
 }
-vector<int> Programa::PesquisarRastreadoresComInicio(unsigned int id)
+vector<Rastreador*> Programa::getRastreadoresComInicio(unsigned int id)
 {
-    vector<int> found;
+    vector<Rastreador*> found;
     string sbegin = to_string(id);
     for(int i = 0; i < rastreadores.size(); i++)
         if(ABeginsWithB(to_string(rastreadores[i]->getId()), sbegin))
-            found.push_back(rastreadores[i]->getId());
+            found.push_back(rastreadores[i]);
     return found;
 }
 

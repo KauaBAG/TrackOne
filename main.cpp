@@ -12,6 +12,7 @@
 #include "Rfid.hpp"
 #include "Programa.hpp"
 
+#include <cstddef>
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -287,6 +288,75 @@ void promptCadastroRastreador()
     
     
 }
+Rastreador* promptEscolherRastreador(string prompt)
+{
+    Rastreador* selected = nullptr;
+    while(selected==nullptr)
+    {
+        cout << prompt;
+        unsigned int id;
+        cin >> id;
+        vector<Rastreador*> encontrados = programa.getRastreadoresComInicio(id);
+        
+        if(encontrados.size()==1)
+        {
+            selected=encontrados.front();
+            break;
+        }
+        vector<string> escolhas;
+        for (Rastreador* r : encontrados) 
+            escolhas.push_back(to_string(r->getId()));
+        escolhas.push_back("Digitar novamente");
+        escolhas.push_back("Voltar");
+        
+        string mPrompt = encontrados.size()==0? "Não há rastreadores com esse Id!": "Há vários rastreadores com Id similar a esse! Exibir qual?";
+        int escolha = menu(escolhas, mPrompt)-1;
+
+        if(escolha == escolhas.size()-1) break;
+        if(escolha == escolhas.size()-2) continue;
+
+        selected = encontrados[escolha];
+    }
+    return selected;
+}
+void promptExibirRastreador()
+{
+    cout << "Exibir Rastreador\n";
+    Rastreador* selected = promptEscolherRastreador("Digite o Id do rastreador que deseja exibir: ");
+    if(selected == nullptr) return;
+
+    cout << "\n" << selected->getString() << "\n";
+    cout << "\n# Pressione qualquer tecla para continuar";
+    getchar();
+}
+void promptAlterarRastreador()
+{
+    unsigned int id;
+    Rastreador* rastr = promptEscolherRastreador("Digite o Id do rastreador que deseja alterar: ");
+    if(rastr == nullptr) return;
+
+    cout << rastr->getString();
+    
+    int ParamAlterar = menu({"Marca","Modelo","Estado","Tipo de Rastreador", "Tipo de comunicacao"}, "Parametros de Atualizaçao");
+    
+    switch(ParamAlterar) {
+        case 1: {string marca; cin >>marca ; rastr->setMarca(marca); break;}
+        case 2: {string modelo; cin >> modelo; rastr->setModelo(modelo); break;}
+        case 3: {int estado = menu({"ATIVO", "INATIVO", "MANUTENCAO", "BLOQUEADO"}, "Estados Do Rastreador"); 
+                rastr->setEstado((EstadoDoRastreador)estado); break;}
+        //case 2: {cin >> string Marca; rastr->setModelo();}
+        //case 3: {cin >> string Marca; rastr->setEstado();}
+    };
+}
+void promptRemoverRastreador()
+{
+    cout << "Remover Rastreador\n";
+
+    Rastreador* selected = promptEscolherRastreador("Digite o Id do rastreador que deseja excluir: ");
+    if(selected == nullptr) return;
+    
+    programa.RemoverRastreador(selected->getId());
+}
 
 int main() {
     cout << "=== Sistema de Rastreamento Iniciado ===\n";
@@ -318,41 +388,15 @@ int main() {
                         break;
                     }
                     case 3: {
-                        cout << "Exibir Rastreador\n";
-                        cout << "Digite o Id do rastreador que deseja exibir: ";
-                        unsigned int id;
-                        cin >> id;
-                        Rastreador* selected = programa.getRastreador(id);
-                        if(selected==nullptr) break;
-                        cout << "\n" << selected->getString() << "\n";
+                        promptExibirRastreador();
                         break;
                     }
                     case 4: {
-                        unsigned int id;
-                        cout << "Digite o Id do rastreador que deseja alterar: ";
-                        cin >> id;
-                        Rastreador* rastr = programa.getRastreador(id);
-                        cout << rastr->getString();
-                        
-                        int ParamAlterar = menu({"Marca","Modelo","Estado","Tipo de Rastreador", "Tipo de comunicacao"}, "Parametros de Atualizaçao");
-                        
-                        switch(ParamAlterar) {
-                            case 1: {string marca; cin >>marca ; rastr->setMarca(marca); break;}
-                            case 2: {string modelo; cin >> modelo; rastr->setModelo(modelo); break;}
-                            case 3: {int estado = menu({"ATIVO", "INATIVO", "MANUTENCAO", "BLOQUEADO"}, "Estados Do Rastreador"); 
-                                    rastr->setEstado((EstadoDoRastreador)estado); break;}
-                            //case 2: {cin >> string Marca; rastr->setModelo();}
-                            //case 3: {cin >> string Marca; rastr->setEstado();}
-                        };
+                        promptAlterarRastreador();
                         break;
                     }
                     case 5: {
-                        cout << "Remover Rastreador\n";
-                        unsigned int id;
-                        cout << "Digite o Id do rastreador que deseja excluir: ";
-                        cin >> id;
-                        
-                        programa.RemoverRastreador(id);
+                        promptRemoverRastreador();
                         break;
                     }
                     case 6: {
