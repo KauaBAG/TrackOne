@@ -83,6 +83,18 @@ int menu(const vector<string>& array, string nome) {
     }
 }
 
+bool promptSimNao(std::string pergunta)
+{
+    while(true)
+    {
+        cout << "\n" << pergunta <<"\n1. Sim \n0. Nao\n";
+        int i = lerInteiro("Resposta: ");
+        if(i == 1) return true;
+        if(i == 0) return false;
+        cout << "Opção inválida. Tente novamente.\n";
+    }
+}
+
 TipoDeComunicacao* criarComunicacaoGsm() {
     cout << "\n=== Criando Comunicação GSM ===\n";
     int tipoDeBanda = menu({"2G", "4G", "5G"}, "Tipos de Banda") - 1;
@@ -94,11 +106,7 @@ TipoDeComunicacao* criarComunicacaoGsm() {
         default: banda = _2G;
     }
 
-    bool fallback;
-    cout << "\nPossui fallback?  \n0. Nao \n1. Sim\n";
-    int i;
-    do { i = lerInteiro("Resposta: "); } while (i < 0 || i > 1); 
-    fallback = (i == 1);
+    bool fallback = promptSimNao("Possui fallback?");
 
     TipoDeComunicacao* gsm = new Gsm(banda, fallback);
     
@@ -148,10 +156,6 @@ RastreadorBase lerDadosBase() {
     cout << "\n=== Dados Base do Rastreador ===\n";
     
     unsigned int id = static_cast<unsigned int>(lerInteiro("Digite o ID do rastreador: "));
-    if (programa.PesquisarRastreador(id) != -1) {
-        cout << "ID já existe. Tente novamente.\n";
-        return lerDadosBase();
-    }
 
     string marca = "";
     cout << "\nDigite a marca do rastreador: ";
@@ -167,7 +171,7 @@ RastreadorBase lerDadosBase() {
     return {id, marca, modelo, estado, dataDeAtivacao};
 }
 
-void criarRastreadorVeicular(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
+RastreadorVeicular* criarRastreadorVeicular(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
     cout << "\n=== Criando Rastreador Veicular ===\n";
     
     string tipoDeCarro, marcaDoCarro, modeloDoCarro;
@@ -179,10 +183,7 @@ void criarRastreadorVeicular(const RastreadorBase& base, TipoDeComunicacao* comu
     cin >> modeloDoCarro;
     limparBuffer();
     
-    bool temCamera;
-    cout << "\nPossui Camera?  \n0. Nao \n1. Sim\n";
-    int i = lerInteiro("Resposta: ");
-    temCamera = (i == 1);
+    bool temCamera = promptSimNao("Possui Camera?");
     
     string identificador, localDeEmissao;
     cout << "\nDigite os digitos da placa: ";
@@ -195,15 +196,12 @@ void criarRastreadorVeicular(const RastreadorBase& base, TipoDeComunicacao* comu
     
     Placa placa(identificador, localDeEmissao, tipo);
 
-    RastreadorVeicular rastr(base.id, base.marca, base.modelo, comunicacao, 
+    return new RastreadorVeicular(base.id, base.marca, base.modelo, comunicacao, 
                                base.estado, base.dataDeAtivacao, tipoDeCarro, 
                                marcaDoCarro, modeloDoCarro, placa, temCamera);
-    cout << "\n" << rastr.getString() << "\n";
-    
-    programa.InserirRastreador(rastr);
 }
 
-void criarRastreadorCarga(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
+RastreadorCarga* criarRastreadorCarga(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
     cout << "\n=== Criando Rastreador de Carga ===\n";
 
     string tipoCarga, remetente, destinatario;
@@ -214,22 +212,14 @@ void criarRastreadorCarga(const RastreadorBase& base, TipoDeComunicacao* comunic
     cout << "Qual o destinatario da carga: ";
     getline(cin, destinatario);
     
-    bool fragil;
-    cout << "\nÉ fragil?  \n0. Nao \n1. Sim\n";
-    int i;
-    do { i = lerInteiro("Resposta: "); } while (i < 0 || i > 1);
-    fragil = (i == 1);
+    bool fragil = promptSimNao("É fragil?");
     
-    RastreadorCarga rastr = RastreadorCarga(base.id, base.marca, base.modelo, comunicacao, 
+    return new RastreadorCarga(base.id, base.marca, base.modelo, comunicacao, 
                         base.estado, base.dataDeAtivacao, tipoCarga, 
                         remetente, destinatario, fragil);
-    cout << "\n" << rastr.getString() << "\n";
-        
-    programa.InserirRastreador(rastr);
-    cout << "Rastreador inserido com sucesso!\n";
 }
 
-void criarRastreadorPessoal(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
+RastreadorPessoal* criarRastreadorPessoal(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
     cout << "\n=== Criando Rastreador Pessoal ===\n";
     
     string nome, telefone, documento;
@@ -240,11 +230,62 @@ void criarRastreadorPessoal(const RastreadorBase& base, TipoDeComunicacao* comun
     cout << "Digite seu documento: ";
     getline(cin, documento);
     
-    RastreadorPessoal rastr(base.id, base.marca, base.modelo, comunicacao, 
+    return new RastreadorPessoal(base.id, base.marca, base.modelo, comunicacao, 
                               base.estado, base.dataDeAtivacao, nome, telefone, documento);
-    cout << "\n" << rastr.getString() << "\n";
+}
+
+void promptCadastroRastreador()
+{
+    cout << "\n=== CADASTRO DE RASTREADOR ===\n";
+                        
+    RastreadorBase base = lerDadosBase();    
+    short tipoDeRastreador = menu({"Veicular", "Carga", "Pessoal"}, "Tipos de Rastreador") - 1;                        
     
-    programa.InserirRastreador(rastr);
+    cout << "Criando comunicação...\n";
+    
+    TipoDeComunicacao* comunicacao = criarComunicacao();
+    Rastreador* toInsert;
+    switch (tipoDeRastreador) 
+    {
+        case 0: toInsert = criarRastreadorVeicular(base, comunicacao); break;
+        case 1: toInsert = criarRastreadorCarga(base, comunicacao); break;
+        case 2: toInsert = criarRastreadorPessoal(base, comunicacao); break;
+        default:
+            cout << "Tipo de rastreador inválido.\n";
+            delete comunicacao; // Limpar memória se não foi usado
+            return;
+    }
+    while(true)
+    {
+        if(programa.InserirRastreador(toInsert) == -1) 
+        {
+            cout << "\nOperação de cadastro concluída.\n";
+            return;
+        }
+        else 
+        {
+            int conflictingId = toInsert->getId();
+            cout<<"\nRastreador Cadastrado\n"<<endl;
+            cout<<toInsert->getString()<<endl<<endl;
+            Rastreador* existing = programa.getRastreador(conflictingId);
+            if(existing!=nullptr) 
+            {
+                cout<<"Rastreador Existente"<<endl;
+                cout << "\n" << existing->getString() << "\n";
+            }
+            switch(menu({"Inserir Cadastrado e apagar Existente", "Apagar Cadastrado e manter Existente", "Alterar Id do Cadastrado", }, "Como prosseguir?")-1)
+            {
+                case 0:
+                    programa.AlterarRastreador(toInsert); return;
+                case 1:
+                    delete toInsert; return;
+                case 2:
+                    toInsert->setId(lerInteiro("Insira o novo id: ")); break;
+            }
+        }
+    }
+    
+    
 }
 
 int main() {
@@ -263,25 +304,7 @@ int main() {
                 
                 switch (escolhaRastreados) {
                     case 1: {
-                        cout << "\n=== CADASTRO DE RASTREADOR ===\n";
-                        
-                        RastreadorBase base = lerDadosBase();    
-                        short tipoDeRastreador = menu({"Veicular", "Carga", "Pessoal"}, "Tipos de Rastreador") - 1;                        
-                        
-                        cout << "Criando comunicação...\n";
-                        TipoDeComunicacao* comunicacao = criarComunicacao();
-                        
-                        switch (tipoDeRastreador) {
-                            case 0: criarRastreadorVeicular(base, comunicacao); break;
-                            case 1: criarRastreadorCarga(base, comunicacao); break;
-                            case 2: criarRastreadorPessoal(base, comunicacao); break;
-                            default:
-                                cout << "Tipo de rastreador inválido.\n";
-                                delete comunicacao; // Limpar memória se não foi usado
-                                break;
-                        }
-                        
-                        cout << "\nOperação de cadastro concluída.\n";
+                        promptCadastroRastreador();
                         break;
                     }      
     
@@ -361,31 +384,28 @@ int main() {
                         unsigned int id = static_cast<unsigned int>(lerInteiro("Digite o ID do rastreador para associar o alerta: "));
                         Rastreador* rastreador = programa.getRastreador(id);
                         unsigned int subid = static_cast<unsigned int>(lerInteiro("Digite o subid do alerta: "));
-                        
                         Data dataDeEmissao = lerData("Digite a data de emissão do alerta");
                     
                         string localizacao;
                         cout << "Digite a localização do alerta: ";
                         getline(cin, localizacao);
                         
+                        Alerta* alerta;
                         switch (tipoDeAlerta)
                         {
                         case 1: {
                             float velocidadeExercida = 0, velocidadeLimite = 0;
-                            if (velocidadeExercida < velocidadeLimite) {
-                                cout << "Velocidade exercida não pode ser menor que a velocidade limite. Tente novamente.\n";
-                                break;
-                            }
                             cout << "Digite a velocidade exercida: ";
                             cin >> velocidadeExercida;
                             cout << "Digite a velocidade limite: ";
                             cin >> velocidadeLimite;
+                            // if (velocidadeExercida < velocidadeLimite) {
+                            //     cout << "Velocidade exercida não pode ser menor que a velocidade limite. Tente novamente.\n";
+                            //     break;
+                            // }     ===== ALERTA VAZIA!!! COISAS RUINS
                             limparBuffer();
                             
-                            AlertaVelocidade alerta(subid, dataDeEmissao, localizacao, 
-                                                    velocidadeExercida, velocidadeLimite);
-                            rastreador->updateAlerta(alerta);
-                            
+                            alerta = new AlertaVelocidade(subid, dataDeEmissao, localizacao, velocidadeExercida, velocidadeLimite);
                             break;
                         }
                         case 2:{
@@ -396,9 +416,8 @@ int main() {
                             cout << "\nFoi descarregada?  \n0. Nao \n1. Sim\n";
                             i = lerInteiro("Resposta: ");
                             foiDescarregada = (i == 1);
-                            AlertaBateria alerta(subid, dataDeEmissao, localizacao, 
-                                                    foiViolada, foiDescarregada);
-                            rastreador->updateAlerta(alerta);
+
+                            alerta = new AlertaBateria(subid, dataDeEmissao, localizacao, foiViolada, foiDescarregada);
                             break;
                         }
                             
@@ -410,8 +429,8 @@ int main() {
                             string zona;
                             cout << "Digite o nome da zona: ";
                             getline(cin, zona);
-                            AlertaZona alerta(subid, dataDeEmissao, localizacao, entrouZona, zona);
-                            rastreador->updateAlerta(alerta);
+
+                            alerta = new AlertaZona(subid, dataDeEmissao, localizacao, entrouZona, zona);
                             break;
                         }
                         
@@ -419,6 +438,7 @@ int main() {
                             cout << "Ta errado boy\n";
                             break;
                         }
+                        rastreador->updateAlerta(alerta);
                         
                         break;
                     }
