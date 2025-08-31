@@ -482,7 +482,7 @@ int main() {
                 break;    
             }   
         case 3:
-            cout << "Mostrar Relatório Geral\n";
+            cout << "\n--- RELATóRIO GERAL ---\n";
             programa.Relatorio();
             cout << "\n# Pressione qualquer tecla para continuar";
             getchar();

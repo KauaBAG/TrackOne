@@ -31,7 +31,7 @@ public:
     }
     std::string getString()
     {
-        return "\n    Comunicação GSM de banda " + toString(banda) + (fallback?" com fallback":" sem fallback");
+        return "    Comunicação GSM de banda " + toString(banda) + (fallback?" com fallback":" sem fallback");
     }
 
     Banda getBanda() {return banda;}
