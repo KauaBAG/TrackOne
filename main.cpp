@@ -310,7 +310,10 @@ int main() {
     
                     case 2: {
                         cout << "\n=== LISTAR RASTREADORES ===\n";
-                        
+                        if (programa.getQuantidadeDeRastreadores() == 0) {
+                            cout << "Nenhum rastreador cadastrado\n";
+                            break;
+                        }
                         cout << programa.ListarRastreadores();
                         cout << "\n# Pressione qualquer tecla para continuar";
                         getchar();
@@ -318,20 +321,30 @@ int main() {
                         break;
                     }
                     case 3: {
-                        cout << "Exibir Rastreador\n";
+                        cout << "\n=== EXIBIR RASTREADORES ===\n";
+                        if (programa.getQuantidadeDeRastreadores() == 0) {
+                            cout << "Nenhum rastreador cadastrado\n";
+                            break;
+                        }
                         cout << "Digite o Id do rastreador que deseja exibir: ";
                         unsigned int id;
                         cin >> id;
                         Rastreador* selected = programa.getRastreador(id);
-                        if(selected==nullptr) break;
+                        if(selected==nullptr) {cout << "Não existe rastreador com esse id"; break;}
                         cout << "\n" << selected->getString() << "\n";
                         break;
                     }
                     case 4: {
+                        cout << "\n=== ALTERAR RASTREADOR ===\n";
+                        if (programa.getQuantidadeDeRastreadores() == 0) {
+                            cout << "Nenhum rastreador cadastrado\n";
+                            break;
+                        }
                         unsigned int id;
                         cout << "Digite o Id do rastreador que deseja alterar: ";
                         cin >> id;
                         Rastreador* rastr = programa.getRastreador(id);
+                        if(rastr==nullptr) {cout << "Esse rastreador não está cadastrado!"; break;}
                         cout << rastr->getString();
                         
                         int ParamAlterar = menu({"Marca","Modelo","Estado","Tipo de Rastreador", "Tipo de comunicacao"}, "Parametros de Atualizaçao");
@@ -347,12 +360,19 @@ int main() {
                         break;
                     }
                     case 5: {
+                        cout << "\n=== REMOVER RASTREADOR ===\n";
+                        if (programa.getQuantidadeDeRastreadores() == 0) {
+                            cout << "Nenhum rastreador cadastrado\n";
+                            break;
+                        }
                         cout << "Remover Rastreador\n";
                         unsigned int id;
                         cout << "Digite o Id do rastreador que deseja excluir: ";
                         cin >> id;
+                        if(programa.getRastreador(id)==nullptr) {cout << "Esse rastreador não está cadastrado!"; break;}
                         
                         programa.RemoverRastreador(id);
+                        cout << "Rastreador removido com sucesso.\n";
                         break;
                     }
                     case 6: {
