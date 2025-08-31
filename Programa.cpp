@@ -1,9 +1,11 @@
 #include "Programa.hpp"
+#include "Rastreador.hpp"
+#include "RastreadorVeicular.hpp"
 using namespace std;
 
-int Programa::InserirRastreador(Rastreador& rastreador)
+int Programa::InserirRastreador(Rastreador* rastreador)
 {
-    int i = PesquisarRastreador(rastreador.getId());
+    int i = PesquisarRastreador(rastreador->getId());
     if(i == -1) rastreadores.push_back(rastreador);
     else cout << "Já existe rastreador com esse id!" << endl;
     return i;
@@ -15,19 +17,19 @@ string Programa::ListarRastreadores()
 
     for (int i = 0; i < rastreadores.size(); i++)
     {
-        ans += rastreadores[i].getString() + "\n";
+        ans += rastreadores[i]->getString() + "\n";
     }
     
     return ans;
 }
 
-void Programa::AlterarRastreador(Rastreador RastreadorAtualizado)
+void Programa::AlterarRastreador(Rastreador* RastreadorAtualizado)
 {
-    int i = PesquisarRastreador(RastreadorAtualizado.getId());
+    int i = PesquisarRastreador(RastreadorAtualizado->getId());
     if(i == -1) cout << "Não existe rastreador com esse id" << endl;
     else 
     {
-        delete rastreadores[i].getTipoDeComunicacaoPtr();
+        delete rastreadores[i];
         rastreadores[i] = RastreadorAtualizado; 
     }
 }
@@ -36,29 +38,34 @@ bool Programa::RemoverRastreador(unsigned int id)
 {
     int i = PesquisarRastreador(id);
     if(i == -1) return false;
+    delete rastreadores[i];
     rastreadores.erase(rastreadores.begin() + i);
     return true;
 }
 
-void Programa::ResetRastreadores() {rastreadores.clear();}
+void Programa::ResetRastreadores() 
+{
+    for(Rastreador* rast : rastreadores) delete rast;
+    rastreadores.clear();
+}
 
 int Programa::PesquisarRastreador(unsigned int id)
 {
     for(int i = 0; i < rastreadores.size(); i++)
-        if(id == rastreadores[i].getId()) return i;
+        if(id == rastreadores[i]->getId()) return i;
     return -1;
 }
 void Programa::contadorTipo(){
 
         for(auto &rastreador : rastreadores){
-            if(rastreador.getTipoDeRastreador() == "Rastreador de Carga"){
+            if(rastreador->getTipoDeRastreador() == "Rastreador de Carga"){
                 qtdc++;
-            }else if(rastreador.getTipoDeRastreador() == "Rastreador Veicular"){
+            }else if(rastreador->getTipoDeRastreador() == "Rastreador Veicular"){
                 qtdv++;
-            }else if(rastreador.getTipoDeRastreador() == "Rastreador Pessoal"){
+            }else if(rastreador->getTipoDeRastreador() == "Rastreador Pessoal"){
                 qtdp++;
             }
-            qtda = rastreador.getQtdAlertas();
+            qtda = rastreador->getQtdAlertas();
         }
     }
     
@@ -93,24 +100,24 @@ void Programa::contadorTipo(){
                 switch(escolha2){
                         
                         case 1:
-                        if (rastreador.getTipoDeRastreador() == "Rastreador de Carga"){
-                        cout << rastreador.getString();
+                        if (rastreador->getTipoDeRastreador() == "Rastreador de Carga"){
+                        cout << rastreador->getString();
                         }
                         case 2:
-                        if (rastreador.getTipoDeRastreador() == "Rastreador Pessoal"){
-                            cout << rastreador.getString();
+                        if (rastreador->getTipoDeRastreador() == "Rastreador Pessoal"){
+                            cout << rastreador->getString();
                         }
                         case 3:
-                        if (rastreador.getTipoDeRastreador() == "Rastreador Veicular"){
-                            cout << rastreador.getString();
+                        if (rastreador->getTipoDeRastreador() == "Rastreador Veicular"){
+                            cout << rastreador->getString();
                         }
                     }
                 }
                         break;
             case 3:
                 for (int i = 0; i < rastreadores.size(); i++){
-                    if(rastreadores.at(i).getQtdAlertas() != 0){
-                        cout << rastreadores.at(i).getString() << endl;
+                    if(rastreadores.at(i)->getQtdAlertas() != 0){
+                        cout << rastreadores.at(i)->getString() << endl;
                     }
                 }
                 break;
@@ -130,7 +137,7 @@ void Programa::Salvar()
 
     for (int i = 0; i < rastreadores.size(); i++)
     {
-        ans += rastreadores[i].getString() + "\n";
+        ans += rastreadores[i]->getString() + "\n";
     }
     
     Arquivo << ans << endl;
@@ -150,28 +157,37 @@ void Programa::JSON()
 
     for (int i = 0; i < rastreadores.size(); i++)
     {
-        ans += rastreadores[i].getStringJSON() + "\n";
+        ans += rastreadores[i]->getStringJSON() + "\n";
     }
     
     json << ans << endl;
     json.close();
-}
-
-void Programa::Carregar(){
-    for (auto &rastreador : rastreadores){
-        rastreador.getStringCarregar();
-    }
 }
     
 Rastreador* Programa::getRastreador(int id) 
 {
     int rastInd = PesquisarRastreador(id);
     if(rastInd == -1) return nullptr;
-    return &rastreadores[rastInd];
+    return rastreadores[rastInd];
 }
 Alerta* Programa::getAlerta(int id, int subid) 
 {
     Rastreador* rast = getRastreador(id);
     if(rast == nullptr) return nullptr;
     return rast->getAlerta(subid);
+} 
+void Programa::CarregarRastreadores(){
+    for (auto &rastreador : rastreadores){
+        rastreador->getStringCarregar();
+    }
 }
+void Programa::CarregarAlertas(){
+    for (auto &rastreador : rastreadores){
+        rastreador->getStringCarregarAlertas();
+    }
+}
+Programa::~Programa()
+{
+    for(Rastreador* rast : rastreadores) delete rast;
+}
+

@@ -33,7 +33,7 @@ protected:
     std::shared_ptr<TipoDeComunicacao> comunicacao = nullptr;  // Usando shared_ptr
     EstadoDoRastreador estado = INATIVO;
     Data ativacao = Data();
-    std::vector<Alerta> alertas = {};
+    std::vector<Alerta*> alertas = {};
     
     // Construtor protegido
     Rastreador(int id, int tipoDeRastreador, std::string marca, std::string modelo, 
@@ -55,7 +55,6 @@ public:
     
     // Getters
     unsigned int getId();
-    unsigned int getQtdAlertas();
     std::string getTipoDeRastreador();
     std::string getMarca();
     std::string getModelo();
@@ -63,8 +62,10 @@ public:
     TipoDeComunicacao* getTipoDeComunicacaoPtr();
     Data& getDataDeAtivacaoRef();
     std::string getEstadoString();
-    DadosRastreador getDadosCarregar();
+    std::string getStringCarregarAlertas();
+    DadosRastreador getDadosCarregarAlertas();
     std::string getStringCarregar();
+    DadosRastreador getDadosCarregar();
     
     // Setters
     void setId(unsigned int id);
@@ -73,10 +74,11 @@ public:
     void setEstado(EstadoDoRastreador estado);
     
     // Métodos para alertas
-    void updateAlerta(Alerta& alerta);
+    void updateAlerta(Alerta *alerta);
     int searchAlerta(int subid);
     void deleteAlerta(int subid);
     std::string getAlertasList();
     void resetAlertas();
     Alerta* getAlerta(int subid);
+    int getQtdAlertas();
 };

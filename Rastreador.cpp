@@ -2,7 +2,6 @@
 #include "Alerta.hpp"
 #include "Data.hpp"
 #include <memory>
-#include <iostream>
 
 std::string Rastreador::getString()
 {
@@ -42,6 +41,23 @@ std::string Rastreador::getStringCarregar() {
            std::to_string(dados.mesAtivacao) + "  " + std::to_string(dados.anoAtivacao);
 }
 
+DadosAlerta Alerta::getDadosCarregarAlertas() {
+    DadosAlerta dado;
+    dado.subid = subid;
+    dado.tipo = tipo;
+    dado.dia = dataDeEmissao.getDia();
+    dado.mes = dataDeEmissao.getMes();
+    dado.ano = dataDeEmissao.getAno();
+    return dado;
+}
+
+std::string Rastreador::getStringCarregarAlertas() {
+    DadosRastreador dado = getDadosCarregarAlertas();
+    return std::to_string(dado.tipoDeRastreador) + "  " + std::to_string(dado.id) + "  " +
+           dado.marca + "  " + dado.modelo + "  " + std::to_string(dado.tipoDeComunicacao) + "  " +
+           std::to_string(dado.estado) + "  " + std::to_string(dado.diaAtivacao) + "  " +
+           std::to_string(dado.mesAtivacao) + "  " + std::to_string(dado.anoAtivacao);
+}
 
 // PRINCIPAL MUDANÇA: Construtor modificado para usar shared_ptr
 Rastreador::Rastreador(int id, int tipo, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
@@ -59,12 +75,12 @@ Rastreador::Rastreador(int id, int tipo, std::string marca, std::string modelo, 
 
 // MUDANÇA: Destrutor - agora definido explicitamente
 Rastreador::~Rastreador() {
+    for(Alerta* alerta : alertas) delete alerta;
     // shared_ptr limpa automaticamente quando necessário
     // Não precisamos mais do delete comunicacao
 }
 
 unsigned int Rastreador::getId() {return id;}
-unsigned int Rastreador::getQtdAlertas() {return alertas.size();}
 
 std::string Rastreador::getTipoDeRastreador() 
 {
@@ -105,9 +121,9 @@ void Rastreador::setModelo(std::string modelo) {this->modelo = modelo;}
 
 void Rastreador::setEstado(EstadoDoRastreador estado) {this->estado = estado;}
 
-void Rastreador::updateAlerta(Alerta &alerta)
+void Rastreador::updateAlerta(Alerta* alerta)
 {
-    int i = searchAlerta(alerta.getSubid());
+    int i = searchAlerta(alerta->getSubid());
     if(i==-1) alertas.push_back(alerta);
     else alertas[i] = alerta;
 }
@@ -115,25 +131,28 @@ void Rastreador::updateAlerta(Alerta &alerta)
 int Rastreador::searchAlerta(int subid)
 {
     for(int i = 0; i < alertas.size(); i++) 
-        if(subid == alertas[i].getSubid()) return i;
+        if(subid == alertas[i]->getSubid()) return i;
     return -1;
 }
 
 void Rastreador::deleteAlerta(int subid)
 {
     int i = searchAlerta(subid);
-    if(i!=-1) alertas.erase(alertas.begin() + i);
+    if(i==-1)return;
+    delete alertas[i];
+    alertas.erase(alertas.begin() + i);
 }
 
 std::string Rastreador::getAlertasList()
 {
     std::string l = "";
-    for(int i = 0; i < alertas.size(); i++) l += alertas[i].getString() + '\n';
+    for(int i = 0; i < alertas.size(); i++) l += alertas[i]->getString() + '\n';
     return l;
 }
 
 void Rastreador::resetAlertas()
 {
+    for(Alerta* alerta : alertas) delete alerta;
     alertas.clear();
 }
 
@@ -141,5 +160,6 @@ Alerta* Rastreador::getAlerta(int subid)
 {
     int alertaInd = searchAlerta(id);
     if(alertaInd == -1) return nullptr;
-    return &alertas[alertaInd];
+    return alertas[alertaInd];
 }
+int Rastreador::getQtdAlertas() {return alertas.size();}

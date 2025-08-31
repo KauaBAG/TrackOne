@@ -3,6 +3,13 @@
 #include <string>
 #include "Data.hpp"
 
+struct DadosAlerta {
+    int subid;
+    int tipo;
+    std::string descricao;
+    int dia, mes, ano;
+};
+
 class Alerta 
 {
 private:
@@ -18,6 +25,10 @@ protected:
     Data dataDeEmissao;
     std::string localizacao = "";
 
+public:
+
+    DadosAlerta getDadosCarregarAlertas();
+
     Alerta(unsigned int tipo, unsigned int subid, Data dataDeEmissao, std::string localizacao)
     {
         setTipo(tipo);
@@ -26,7 +37,6 @@ protected:
         setLocalizacao(localizacao);
     }
 
-public:
     
     virtual std::string getString()
     {

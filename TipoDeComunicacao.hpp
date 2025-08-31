@@ -31,4 +31,3 @@ public:
     virtual ~TipoDeComunicacao() {}
     short getTipo() {return tipo;}
 };
-
