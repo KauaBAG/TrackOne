@@ -170,7 +170,7 @@ RastreadorBase lerDadosBase() {
     return {id, marca, modelo, estado, dataDeAtivacao};
 }
 
-void criarRastreadorVeicular(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
+RastreadorVeicular* criarRastreadorVeicular(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
     cout << "\n=== Criando Rastreador Veicular ===\n";
     
     string tipoDeCarro, marcaDoCarro, modeloDoCarro;
@@ -195,15 +195,12 @@ void criarRastreadorVeicular(const RastreadorBase& base, TipoDeComunicacao* comu
     
     Placa placa(identificador, localDeEmissao, tipo);
 
-    RastreadorVeicular *rastr = new RastreadorVeicular(base.id, base.marca, base.modelo, comunicacao, 
+    return new RastreadorVeicular(base.id, base.marca, base.modelo, comunicacao, 
                                base.estado, base.dataDeAtivacao, tipoDeCarro, 
                                marcaDoCarro, modeloDoCarro, placa, temCamera);
-    cout << "\n" << rastr->getString() << "\n";
-    
-    programa.InserirRastreador(rastr);
 }
 
-void criarRastreadorCarga(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
+RastreadorCarga* criarRastreadorCarga(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
     cout << "\n=== Criando Rastreador de Carga ===\n";
     
     string tipoCarga, remetente, destinatario;
@@ -216,16 +213,12 @@ void criarRastreadorCarga(const RastreadorBase& base, TipoDeComunicacao* comunic
     
     bool fragil = promptSimNao("É fragil?");
     
-    RastreadorCarga *rastr = new RastreadorCarga(base.id, base.marca, base.modelo, comunicacao, 
+    return new RastreadorCarga(base.id, base.marca, base.modelo, comunicacao, 
                         base.estado, base.dataDeAtivacao, tipoCarga, 
                         remetente, destinatario, fragil);
-    cout << "\n" << rastr->getString() << "\n";
-        
-    programa.InserirRastreador(rastr);
-    cout << "Rastreador inserido com sucesso!\n";
 }
 
-void criarRastreadorPessoal(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
+RastreadorPessoal* criarRastreadorPessoal(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
     cout << "\n=== Criando Rastreador Pessoal ===\n";
     
     string nome, telefone, documento;
@@ -236,11 +229,62 @@ void criarRastreadorPessoal(const RastreadorBase& base, TipoDeComunicacao* comun
     cout << "Digite seu documento: ";
     getline(cin, documento);
     
-    RastreadorPessoal* rastr = new RastreadorPessoal(base.id, base.marca, base.modelo, comunicacao, 
+    return new RastreadorPessoal(base.id, base.marca, base.modelo, comunicacao, 
                               base.estado, base.dataDeAtivacao, nome, telefone, documento);
-    cout << "\n" << rastr->getString() << "\n";
+}
+
+void promptCadastroRastreador()
+{
+    cout << "\n=== CADASTRO DE RASTREADOR ===\n";
+                        
+    RastreadorBase base = lerDadosBase();    
+    short tipoDeRastreador = menu({"Veicular", "Carga", "Pessoal"}, "Tipos de Rastreador") - 1;                        
     
-    programa.InserirRastreador(rastr);
+    cout << "Criando comunicação...\n";
+    
+    TipoDeComunicacao* comunicacao = criarComunicacao();
+    Rastreador* toInsert;
+    switch (tipoDeRastreador) 
+    {
+        case 0: toInsert = criarRastreadorVeicular(base, comunicacao); break;
+        case 1: toInsert = criarRastreadorCarga(base, comunicacao); break;
+        case 2: toInsert = criarRastreadorPessoal(base, comunicacao); break;
+        default:
+            cout << "Tipo de rastreador inválido.\n";
+            delete comunicacao; // Limpar memória se não foi usado
+            return;
+    }
+    while(true)
+    {
+        if(programa.InserirRastreador(toInsert) == -1) 
+        {
+            cout << "\nOperação de cadastro concluída.\n";
+            return;
+        }
+        else 
+        {
+            int conflictingId = toInsert->getId();
+            cout<<"\nRastreador Cadastrado\n"<<endl;
+            cout<<toInsert->getString()<<endl<<endl;
+            Rastreador* existing = programa.getRastreador(conflictingId);
+            if(existing!=nullptr) 
+            {
+                cout<<"Rastreador Existente"<<endl;
+                cout << "\n" << existing->getString() << "\n";
+            }
+            switch(menu({"Inserir Cadastrado e apagar Existente", "Apagar Cadastrado e manter Existente", "Alterar Id do Cadastrado", }, "Como prosseguir?")-1)
+            {
+                case 0:
+                    programa.AlterarRastreador(toInsert); return;
+                case 1:
+                    delete toInsert; return;
+                case 2:
+                    toInsert->setId(lerInteiro("Insira o novo id: ")); break;
+            }
+        }
+    }
+    
+    
 }
 
 int main() {
@@ -259,25 +303,7 @@ int main() {
                 
                 switch (escolhaRastreados) {
                     case 1: {
-                        cout << "\n=== CADASTRO DE RASTREADOR ===\n";
-                        
-                        RastreadorBase base = lerDadosBase();    
-                        short tipoDeRastreador = menu({"Veicular", "Carga", "Pessoal"}, "Tipos de Rastreador") - 1;                        
-                        
-                        cout << "Criando comunicação...\n";
-                        TipoDeComunicacao* comunicacao = criarComunicacao();
-                        
-                        switch (tipoDeRastreador) {
-                            case 0: criarRastreadorVeicular(base, comunicacao); break;
-                            case 1: criarRastreadorCarga(base, comunicacao); break;
-                            case 2: criarRastreadorPessoal(base, comunicacao); break;
-                            default:
-                                cout << "Tipo de rastreador inválido.\n";
-                                delete comunicacao; // Limpar memória se não foi usado
-                                break;
-                        }
-                        
-                        cout << "\nOperação de cadastro concluída.\n";
+                        promptCadastroRastreador();
                         break;
                     }      
     
