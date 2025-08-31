@@ -82,6 +82,18 @@ int menu(const vector<string>& array, string nome) {
     }
 }
 
+bool promptSimNao(std::string pergunta)
+{
+    while(true)
+    {
+        cout << "\n" << pergunta <<"\n1. Sim \n0. Nao\n";
+        int i = lerInteiro("Resposta: ");
+        if(i == 1) return true;
+        if(i == 0) return false;
+        cout << "Opção inválida. Tente novamente.\n";
+    }
+}
+
 TipoDeComunicacao* criarComunicacaoGsm() {
     cout << "\n=== Criando Comunicação GSM ===\n";
     int tipoDeBanda = menu({"2G", "4G", "5G"}, "Tipos de Banda") - 1;
@@ -93,10 +105,7 @@ TipoDeComunicacao* criarComunicacaoGsm() {
         default: banda = _2G;
     }
 
-    bool fallback;
-    cout << "\nPossui fallback?  \n0. Nao \n1. Sim\n";
-    int i = lerInteiro("Resposta: ");
-    fallback = (i == 1);
+    bool fallback = promptSimNao("Possui fallback?");
 
     TipoDeComunicacao* gsm = new Gsm(banda, fallback);
     
@@ -173,10 +182,7 @@ void criarRastreadorVeicular(const RastreadorBase& base, TipoDeComunicacao* comu
     cin >> modeloDoCarro;
     limparBuffer();
     
-    bool temCamera;
-    cout << "\nPossui Camera?  \n0. Nao \n1. Sim\n";
-    int i = lerInteiro("Resposta: ");
-    temCamera = (i == 1);
+    bool temCamera = promptSimNao("Possui Camera?");
     
     string identificador, localDeEmissao;
     cout << "\nDigite os digitos da placa: ";
@@ -208,10 +214,7 @@ void criarRastreadorCarga(const RastreadorBase& base, TipoDeComunicacao* comunic
     cout << "Qual o destinatario da carga: ";
     getline(cin, destinatario);
     
-    bool fragil;
-    cout << "\nÉ fragil?  \n0. Nao \n1. Sim\n";
-    int i = lerInteiro("Resposta: ");
-    fragil = (i == 1);
+    bool fragil = promptSimNao("É fragil?");
     
     RastreadorCarga *rastr = new RastreadorCarga(base.id, base.marca, base.modelo, comunicacao, 
                         base.estado, base.dataDeAtivacao, tipoCarga, 
