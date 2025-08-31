@@ -97,7 +97,7 @@ void Programa::contadorTipo(){
         switch(escolha){
 
             case 1:
-                ListarRastreadores();
+                cout << ListarRastreadores();
                 break;
             case 2:
                 cout << "1 - Rastreador de carga " << endl;
@@ -113,20 +113,20 @@ void Programa::contadorTipo(){
                     switch(escolha2){
                         
                         case 1:
-                        if (rastreador.getTipoDeRastreador() == "Rastreador de Carga"){
-                            cout << rastreador.getString();
+                            if (rastreador.getTipoDeRastreador() == "Rastreador de Carga"){
+                                cout << rastreador.getString();
+                            }
                             break;
-                        }
                         case 2:
-                        if (rastreador.getTipoDeRastreador() == "Rastreador Pessoal"){
+                            if (rastreador.getTipoDeRastreador() == "Rastreador Pessoal"){
                             cout << rastreador.getString();
+                            }    
                             break;
-                        }
                         case 3:
-                        if (rastreador.getTipoDeRastreador() == "Rastreador Veicular"){
-                            cout << rastreador.getString();
-                            break;
-                        }
+                            if (rastreador.getTipoDeRastreador() == "Rastreador Veicular"){
+                                cout << rastreador.getString();
+                            }    
+                            break;  
                     }
                 }
                         break;

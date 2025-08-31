@@ -55,7 +55,7 @@ int lerInteiro(const string& mensagem) {
 Data lerData(string mensagem) {
     short dia, mes;
     int ano;
-    cout << mensagem << " (dia mes ano): ";
+    cout << mensagem << " (dia mes ano)\n";
     
     dia = lerInteiro("Dia: ");
     mes = lerInteiro("Mês: ");
@@ -148,6 +148,10 @@ RastreadorBase lerDadosBase() {
     cout << "\n=== Dados Base do Rastreador ===\n";
     
     unsigned int id = static_cast<unsigned int>(lerInteiro("Digite o ID do rastreador: "));
+    if (programa.PesquisarRastreador(id) != -1) {
+        cout << "ID já existe. Tente novamente.\n";
+        return lerDadosBase();
+    }
 
     string marca = "";
     cout << "\nDigite a marca do rastreador: ";
@@ -468,6 +472,7 @@ int main() {
                         cout << "Digite o subId do Alerta que deseja excluir: ";
                         cin >> subid;
                         programa.getRastreador(id)->deleteAlerta(subid);
+                        cout << "Alerta removido com sucesso!\n";
                         break;
                     }
                     case 6:
