@@ -18,15 +18,15 @@ class Programa
 {
 
 protected:
-    vector <Rastreador> rastreadores;
+    vector <Rastreador*> rastreadores;
     Rastreador* getRastreadorByIndex(int index);
     int qtda = 0, qtdc = 0, qtdp = 0, qtdv = 0;
 
 public:
-    int InserirRastreador(Rastreador& rastreador);
+    int InserirRastreador(Rastreador *rastreador);
     Rastreador* getRastreador(int id);
     string ListarRastreadores();
-    void AlterarRastreador(Rastreador RastreadorAtualizado);
+    void AlterarRastreador(Rastreador *RastreadorAtualizado);
     bool RemoverRastreador(unsigned int id);
     void contadorTipo();
     void Relatorio();
@@ -40,4 +40,6 @@ public:
     void JSON();      
 
     Alerta* getAlerta(int id, int subid);
+
+    virtual ~Programa();
 };

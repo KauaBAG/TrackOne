@@ -21,7 +21,7 @@ protected:
     std::shared_ptr<TipoDeComunicacao> comunicacao = nullptr;  // Usando shared_ptr
     EstadoDoRastreador estado = INATIVO;
     Data ativacao = Data();
-    std::vector<Alerta> alertas = {};
+    std::vector<Alerta*> alertas = {};
     
     // Construtor protegido
     Rastreador(int id, int tipoDeRastreador, std::string marca, std::string modelo, 
@@ -58,7 +58,7 @@ public:
     void setEstado(EstadoDoRastreador estado);
     
     // Métodos para alertas
-    void updateAlerta(Alerta& alerta);
+    void updateAlerta(Alerta *alerta);
     int searchAlerta(int subid);
     void deleteAlerta(int subid);
     std::string getAlertasList();
