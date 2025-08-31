@@ -293,9 +293,7 @@ Rastreador* promptEscolherRastreador(string prompt)
     Rastreador* selected = nullptr;
     while(selected==nullptr)
     {
-        cout << prompt;
-        unsigned int id;
-        cin >> id;
+        unsigned int id = lerInteiro(prompt);
         vector<Rastreador*> encontrados = programa.getRastreadoresComInicio(id);
         
         if(encontrados.size()==1)
