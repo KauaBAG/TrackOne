@@ -3,6 +3,7 @@
 #include "RastreadorVeicular.hpp"
 #include <iterator>
 #include <string>
+#include "utils.hpp"
 using namespace std;
 
 int Programa::InserirRastreador(Rastreador* rastreador)
@@ -68,12 +69,6 @@ int Programa::PesquisarRastreador(unsigned int id)
     for(int i = 0; i < rastreadores.size(); i++)
         if(id == rastreadores[i]->getId()) return i;
     return -1;
-}
-bool ABeginsWithB(string a, string b)
-{
-    if(a.size() < b.size()) return false;
-    for(int i = 0; i < b.size(); i++) if(a[i]!=b[i]) return false;
-    return true;
 }
 vector<Rastreador*> Programa::getRastreadoresComInicio(unsigned int id)
 {

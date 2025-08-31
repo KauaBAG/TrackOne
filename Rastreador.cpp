@@ -2,6 +2,7 @@
 #include "Alerta.hpp"
 #include "Data.hpp"
 #include <memory>
+#include "utils.hpp"
 
 std::string Rastreador::getString()
 {
@@ -122,4 +123,13 @@ Alerta* Rastreador::getAlerta(int subid)
     int alertaInd = searchAlerta(subid);
     if(alertaInd == -1) return nullptr;
     return alertas[alertaInd];
+}
+std::vector<Alerta*> Rastreador::getAlertasComInicio(unsigned int subid)
+{
+    std::vector<Alerta*> found;
+    std::string sbegin = std::to_string(subid);
+    for(int i = 0; i < alertas.size(); i++)
+        if(ABeginsWithB(std::to_string(alertas[i]->getSubid()), sbegin))
+            found.push_back(alertas[i]);
+    return found;
 }
