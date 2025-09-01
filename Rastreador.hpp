@@ -65,4 +65,5 @@ public:
     std::string getAlertasList();
     void resetAlertas();
     Alerta* getAlerta(int subid);
+    std::vector<Alerta*> getAlertasComInicio(unsigned int subid);
 };

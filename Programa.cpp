@@ -1,6 +1,9 @@
 #include "Programa.hpp"
 #include "Rastreador.hpp"
 #include "RastreadorVeicular.hpp"
+#include <iterator>
+#include <string>
+#include "utils.hpp"
 using namespace std;
 
 int Programa::InserirRastreador(Rastreador* rastreador)
@@ -67,6 +70,16 @@ int Programa::PesquisarRastreador(unsigned int id)
         if(id == rastreadores[i]->getId()) return i;
     return -1;
 }
+vector<Rastreador*> Programa::getRastreadoresComInicio(unsigned int id)
+{
+    vector<Rastreador*> found;
+    string sbegin = to_string(id);
+    for(int i = 0; i < rastreadores.size(); i++)
+        if(ABeginsWithB(to_string(rastreadores[i]->getId()), sbegin))
+            found.push_back(rastreadores[i]);
+    return found;
+}
+
 void Programa::contadorTipo(){
         qtda = 0; qtdc = 0; qtdp = 0; qtdv = 0;
         for(auto &rastreador : rastreadores){
