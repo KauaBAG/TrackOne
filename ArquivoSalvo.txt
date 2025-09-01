@@ -1,0 +1,12 @@
+Rastreador Veicular
+    Id: 1,
+    Marca: 1, 
+    Modelo: 1, 
+    Comunicação GSM de banda 2G com fallback, 
+    Estado: ATIVO, 
+    Data de ativacao: 1 de Janeiro de 1,
+    Tipo: 1,
+    Marca do carro: 1,
+    Modelo do carro: 1,
+    Com camera
+

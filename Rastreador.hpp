@@ -83,8 +83,6 @@ public:
     void resetAlertas();
     Alerta* getAlerta(int subid);
 
-    int getQtdAlertas();
-
     std::vector<Alerta*> getAlertasComInicio(unsigned int subid);
 
 };
