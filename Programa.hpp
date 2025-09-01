@@ -49,4 +49,5 @@ public:
 
     int getQuantidadeDeRastreadores();
     int getQuantidadeDeAlertas();
+
 };

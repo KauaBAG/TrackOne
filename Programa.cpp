@@ -123,7 +123,6 @@ int Programa::getQuantidadeDeAlertas(){
         cin.ignore();
 
         switch(escolha){
-
             case 1:
                 cout << ListarRastreadores();
                 break;
@@ -183,10 +182,22 @@ void Programa::Salvar()
     {
         ans += rastreadores[i]->getString() + "\n";
     }
-    
     Arquivo << ans << endl;
     Arquivo.close();
     cout << "Arquivo Salvo em \"ArquivoSalvo.txt\"" << endl;
+
+    fstream arquivo3("AlertaSalvo.txt", ios::out);
+    if(!arquivo3){
+        cout << "O aquivo não foi criado!" << endl;
+    }
+    string ans2 = "";
+    for (int i = 0; i < rastreadores.size(); i++)
+    {
+        ans2 += rastreadores[i]->getStringCarregar() + "\n ";
+    }  
+    arquivo3 << ans2 << endl;
+    arquivo3.close();
+    cout << "Arquivo Salvo em \"AlertaSalvo.txt\"" << endl;
 }
 
 void Programa::JSON()
@@ -209,9 +220,9 @@ void Programa::JSON()
 }
 Rastreador* CarregarRastreador(vector<std::string> desc)
 {
-    
+    return nullptr;
 }
-Alerta* CriarAlerta(std::string desc)
+Alerta* CarregarAlerta(vector<std::string> desc)
 {
     return nullptr;
 }
@@ -236,6 +247,27 @@ void Programa::Carregar()
         rastCompleto.push_back(linha);
     }
     CarregarRastreador(rastCompleto);
+    arquivo.close();
+    fstream arquivo2("AlertaSalvo.txt", ios::in);
+    if(!arquivo2)
+        return;
+        linha = "";
+    vector<std::string> alertaCompleto(1); 
+    getline(arquivo2,alertaCompleto[0]);
+
+    while(getline(arquivo2,linha))
+    {
+        if(linha == "Rastreador Veicular" || 
+            linha == "Rastreador de Carga" || 
+            linha == "Rastreador Pessoal")
+        {
+            CarregarAlerta(alertaCompleto);
+            alertaCompleto.clear();
+        }
+        alertaCompleto.push_back(linha);
+    }
+    CarregarAlerta(alertaCompleto);
+    arquivo2.close();
 }
     
 Rastreador* Programa::getRastreador(int id) 

@@ -51,6 +51,7 @@ public:
     TipoDeComunicacao* getTipoDeComunicacaoPtr();
     Data& getDataDeAtivacaoRef();
     std::string getEstadoString();
+    std::string getStringCarregar();
     
     // Setters
     void setId(unsigned int id);
