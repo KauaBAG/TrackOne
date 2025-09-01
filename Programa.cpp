@@ -1,12 +1,18 @@
 #include "Programa.hpp"
 #include "Alerta.hpp"
+#include "Data.hpp"
+#include "Gsm.hpp"
 #include "Rastreador.hpp"
 #include "RastreadorPessoal.hpp"
 #include "RastreadorVeicular.hpp"
+#include <cstdio>
 #include <fstream>
 #include <iterator>
 #include <string>
 #include <vector>
+#include "Rfid.hpp"
+#include "Satelital.hpp"
+#include "TipoDeComunicacao.hpp"
 #include "utils.hpp"
 using namespace std;
 
@@ -191,6 +197,68 @@ void Programa::Salvar()
 
 Rastreador* CarregarRastreador(vector<std::string> desc)
 {
+    int c = 0;
+    cout<<desc[c]<<endl;
+    int tipo = stoi(desc[c]); c++;
+    cout<<desc[c]<<endl;
+    int id = stoi(desc[c]); c++;
+    string marca = desc[c]; c++;
+    string modelo = desc[c]; c++;
+    TipoDeComunicacao* tp = nullptr;
+    cout<<desc[c]<<endl;
+    int TipoDeComunicacao = stoi(desc[c]);c++;
+    if(TipoDeComunicacao == 0)//GSM
+    {
+        Banda b;
+        if(desc[c]=="2G")b=_2G;
+        else if(desc[c]=="4G")b=_4G;
+        else if(desc[c]=="5G")b=_5G;
+        c++;
+        bool fallback = desc[c][0]-'0'; c++;
+        tp = new Gsm(b,fallback);
+    }
+    else if(TipoDeComunicacao == 1)//RFID
+    {
+        cout<<desc[c]<<endl;
+        float frequencia = stof(desc[c]); c++;
+        string tipoRfid = desc[c]; c++;
+        tp = new Rfid(frequencia,tipoRfid);
+    }
+    else if(TipoDeComunicacao == 2)//Satelital
+    {
+        cout<<desc[c]<<endl;
+        int id = stoi(desc[c]); c++;
+        tp = new Satelital(id);
+    }
+    EstadoDoRastreador estado;
+    if(desc[c]=="ATIVO")estado=EstadoDoRastreador::ATIVO;
+    else if(desc[c]=="INATIVO")estado=EstadoDoRastreador::INATIVO;
+    else if(desc[c]=="BLOQUEADO")estado=EstadoDoRastreador::BLOQUEADO;
+    else if(desc[c]=="MANUTENCAO")estado=EstadoDoRastreador::MANUTENCAO;
+    c++;
+
+    int dia = stoi(desc[c]); c++;
+    int mes = stoi(desc[c]); c++;
+    int ano = stoi(desc[c]); c++;
+
+    Data dt(dia,mes,ano);
+
+    if(tipo == 0)//veicular
+    {
+        string tipoVeiculo = desc[c]; c++;
+        string marcaDoCarro = desc[c]; c++;
+        string modeloDoCarro = desc[c]; c++;
+        
+        string identificador = desc[c]; c++;
+        string localDeEmissao = desc[c]; c++;
+        TipoDePlaca tipoPlaca = (TipoDePlaca)stoi(desc[c]);c++;
+
+        bool temCamera = desc[c][0]-'0'; c++;
+
+        return new RastreadorVeicular(id,marca,modelo,tp,estado,dt,tipoVeiculo,marcaDoCarro,modeloDoCarro,
+            Placa(identificador,localDeEmissao,tipoPlaca),temCamera);
+    }
+
     return nullptr;
 }
 Alerta* CriarAlerta(std::string desc)
@@ -203,21 +271,19 @@ void Programa::Carregar()
     if(!arquivo)
         return;
     std::string linha; 
-    vector<std::string> rastCompleto(1); 
-    getline(arquivo,rastCompleto[0]);
+    vector<std::string> rastCompleto; 
+    getline(arquivo,linha);
 
     while(getline(arquivo,linha))
     {
-        if(linha == "Rastreador Veicular" || 
-            linha == "Rastreador de Carga" || 
-            linha == "Rastreador Pessoal")
+        if(linha == "INICIO")
         {
-            CarregarRastreador(rastCompleto);
+            InserirRastreador(CarregarRastreador(rastCompleto));
             rastCompleto.clear();
         }
-        rastCompleto.push_back(linha);
+        else rastCompleto.push_back(linha);
     }
-    CarregarRastreador(rastCompleto);
+    InserirRastreador(CarregarRastreador(rastCompleto));
 }
     
 Rastreador* Programa::getRastreador(int id) 

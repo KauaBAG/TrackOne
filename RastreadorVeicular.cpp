@@ -11,6 +11,9 @@ std::string RastreadorVeicular::getStringSalvar()
      + tipo+"\n"
      + marcaDoCarro+"\n"
      + modeloDoCarro+"\n"
+     + placa.identificador+"\n"
+     + placa.localDeEmissao+"\n"
+     + std::to_string(placa.tipo)+"\n"
      + std::to_string(temCamera);
 }
 RastreadorVeicular::RastreadorVeicular(unsigned int id, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
