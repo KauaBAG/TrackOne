@@ -93,6 +93,11 @@ void Programa::contadorTipo(){
             qtda = rastreador->getQtdAlertas();
         }
     }
+
+int Programa::getQuantidadeDeAlertas(){ 
+        contadorTipo();
+        return qtda;
+    }
     
     void Programa::Relatorio(){
 
@@ -215,3 +220,6 @@ Programa::~Programa()
 {
     for(Rastreador* rast : rastreadores) delete rast;
 }
+
+int Programa::getQuantidadeDeRastreadores() { return rastreadores.size(); }
+

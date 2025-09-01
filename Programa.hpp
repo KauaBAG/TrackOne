@@ -44,4 +44,7 @@ public:
     Alerta* getAlerta(int id, int subid);
 
     virtual ~Programa();
+
+    int getQuantidadeDeRastreadores();
+    int getQuantidadeDeAlertas();
 };

@@ -319,7 +319,12 @@ Rastreador* promptEscolherRastreador(string prompt)
 }
 void promptExibirRastreador()
 {
-    cout << "Exibir Rastreador\n";
+    cout << "\n=== EXIBIR RASTREADORES ===\n";
+    if (programa.getQuantidadeDeRastreadores() == 0) {
+        cout << "Nenhum rastreador cadastrado\n";
+        return;
+    }
+    
     Rastreador* selected = promptEscolherRastreador("Digite o Id do rastreador que deseja exibir: ");
     if(selected == nullptr) return;
 
@@ -329,6 +334,12 @@ void promptExibirRastreador()
 }
 void promptAlterarRastreador()
 {
+    cout << "\n=== ALTERAR RASTREADOR ===\n";
+    if (programa.getQuantidadeDeRastreadores() == 0) 
+    {
+        cout << "Nenhum rastreador cadastrado\n";
+        return;;
+    }
     unsigned int id;
     Rastreador* rastr = promptEscolherRastreador("Digite o Id do rastreador que deseja alterar: ");
     if(rastr == nullptr) return;
@@ -348,7 +359,11 @@ void promptAlterarRastreador()
 }
 void promptRemoverRastreador()
 {
-    cout << "Remover Rastreador\n";
+    cout << "\n=== REMOVER RASTREADOR ===\n";
+    if (programa.getQuantidadeDeRastreadores() == 0) {
+        cout << "Nenhum rastreador cadastrado\n";
+        return;
+    }
 
     Rastreador* selected = promptEscolherRastreador("Digite o Id do rastreador que deseja excluir: ");
     if(selected == nullptr) return;
@@ -358,11 +373,14 @@ void promptRemoverRastreador()
     
     programa.RemoverRastreador(selected->getId());
     cout << "Rastreador removido com sucesso!\n";   
-
 }
 void promptCadastrarAlerta()
 {
-    cout << "Cadastrar Alerta\n";
+    cout << "\n=== Cadastrar Alerta ===\n";
+    if (programa.getQuantidadeDeRastreadores() == 0) {
+        cout << "Nenhum rastreador cadastrado, portanto, não há como cadastrar alertas!\n";
+        return;
+    }
     Rastreador* rastreador = promptEscolherRastreador("Digite o ID do rastreador para associar o alerta: ");
     if(rastreador == nullptr) return;
     
@@ -469,7 +487,11 @@ Alerta* promptEscolherAlerta(string prompt)
 }
 void promptExibirAlerta()
 {
-    cout << "Exibir Alerta\n";
+    cout << "\n=== Exibir Alerta ===\n";
+    if (programa.getQuantidadeDeRastreadores() == 0) {
+        cout << "Nenhum rastreador cadastrado, portanto, não há como exibir alertas!\n";
+        return;
+    }
 
     Alerta* selected = promptEscolherAlerta("Digite o subId do Alerta que deseja exibir: ");
     if(selected==nullptr) return;
@@ -480,7 +502,11 @@ void promptExibirAlerta()
 }
 void promptAlterarAlerta()
 {
-    cout << "Alterar Alerta\n";
+    cout << "\n=== Alterar Alerta ===\n";
+    if (programa.getQuantidadeDeRastreadores() == 0) {
+        cout << "Nenhum rastreador cadastrado, portanto, não há como alterar alertas!\n";
+        return;
+    }
 
     Alerta* alerta = promptEscolherAlerta("Digite o subId do Alerta que deseja alterar: ");
     if(alerta == nullptr) return;
@@ -498,6 +524,11 @@ void promptAlterarAlerta()
 }
 void promptRemoverAlerta()
 {
+    cout << "\n=== Remover Alerta ===\n";
+    if (programa.getQuantidadeDeRastreadores() == 0) {
+        cout << "Nenhum rastreador cadastrado, portanto, não há como remover alertas!\n";
+        return;
+    }
     Rastreador* rastreador = nullptr;   
     Alerta* alerta = promptEscolherAlerta(rastreador, "Digite o subId do Alerta que deseja excluir: ");
     if(rastreador==nullptr||alerta==nullptr) return;
@@ -530,7 +561,10 @@ int main() {
     
                     case 2: {
                         cout << "\n=== LISTAR RASTREADORES ===\n";
-                        
+                        if (programa.getQuantidadeDeRastreadores() == 0) {
+                            cout << "Nenhum rastreador cadastrado\n";
+                            break;
+                        }
                         cout << programa.ListarRastreadores();
                         cout << "\n# Pressione qualquer tecla para continuar";
                         getchar();
@@ -575,8 +609,15 @@ int main() {
                         break;
                     }
                     case 2: {
+                        if (programa.getQuantidadeDeRastreadores() == 0) {
+                            cout << "Nenhum rastreador cadastrado, portanto, não há alertas\n";
+                            break;
+                        }
+                        if (programa.getQuantidadeDeAlertas() == 0) {
+                            cout << "Nenhum alerta cadastrado\n";
+                            break;
+                        }
                         cout << "Listar Alertas\n";
-
                         cout << programa.ListarAlertas();
                         cout << "\n# Pressione qualquer tecla para continuar";
                         getchar();
