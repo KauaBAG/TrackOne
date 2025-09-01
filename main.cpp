@@ -256,6 +256,12 @@ void promptCadastroRastreador()
             delete comunicacao; // Limpar memória se não foi usado
             return;
     }
+    cout << "\n" << toInsert->getString() << "\n";
+    if(!promptSimNao("Cadastrar esse rastreador?"))
+    {
+        delete toInsert; 
+        return;
+    }
     while(true)
     {
         if(programa.InserirRastreador(toInsert) == -1) 
@@ -281,7 +287,14 @@ void promptCadastroRastreador()
                 case 1:
                     delete toInsert; return;
                 case 2:
-                    toInsert->setId(lerInteiro("Insira o novo id: ")); break;
+                    toInsert->setId(lerInteiro("Insira o novo id: ")); 
+                    cout << "\n" << toInsert->getString() << "\n";
+                    if(!promptSimNao("Cadastrar esse rastreador?"))
+                    {
+                        delete toInsert; 
+                        return;
+                    }
+                    break;
             }
         }
     }
@@ -434,6 +447,12 @@ void promptCadastrarAlerta()
     default:
         cout << "Ta errado boy\n";
         break;
+    }
+    cout << "\n" << alerta->getString() << "\n";
+    if(!promptSimNao("Cadastrar essa alerta no rastreador de Id " + to_string(rastreador->getId()) + "?"))
+    {
+        delete alerta; 
+        return;
     }
     rastreador->updateAlerta(alerta);
 }
