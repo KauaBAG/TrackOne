@@ -133,3 +133,11 @@ std::vector<Alerta*> Rastreador::getAlertasComInicio(unsigned int subid)
             found.push_back(alertas[i]);
     return found;
 }
+
+std::string Rastreador::getStringCarregar() {
+    std::string ans = "";
+    for(Alerta* alerta : alertas) {
+        ans += alerta->getStringSalvarAlerta();
+    }
+    return ans + "\n ";
+}

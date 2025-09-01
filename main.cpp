@@ -558,7 +558,9 @@ void promptRemoverAlerta()
     rastreador->deleteAlerta(alerta->getSubid());
     cout << "Alerta removida com sucesso!\n";   
 }
+
 int main() {
+    programa.Carregar();
     cout << "=== Sistema de Rastreamento Iniciado ===\n";
     
     while(true) {

@@ -32,6 +32,12 @@ public:
     {
         return "    SubId: " + std::to_string(subid)+",\n    "+getTipo() + ",\n    Data: " + dataDeEmissao.getString() + ",\n    Localizacao: "+ localizacao;
     }
+
+    std::string getStringSalvarAlerta(){
+
+        return std::to_string(subid) + "\n" + std::to_string(tipo) + "\n" + std::to_string(dataDeEmissao.getDia()) +
+         "\n" + std::to_string(dataDeEmissao.getMes()) + "\n" + std::to_string(dataDeEmissao.getAno()) + "\n" + localizacao;
+    }
     
     std::string getTipo() 
     {
@@ -44,6 +50,7 @@ public:
     unsigned int getSubid() {return subid;}
     Data getDataDeEmissao() {return dataDeEmissao;}
     std::string getLocalizacao() {return localizacao;}
+    //std::string getStringSalvarAlerta() {return linha;}
 
     void setSubid(unsigned int subid) {this->subid = subid;}
     void setDataDeEmissao(Data dataDeEmissao) {this->dataDeEmissao = dataDeEmissao;}
