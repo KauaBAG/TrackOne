@@ -352,8 +352,13 @@ void promptRemoverRastreador()
 
     Rastreador* selected = promptEscolherRastreador("Digite o Id do rastreador que deseja excluir: ");
     if(selected == nullptr) return;
+
+    cout << "\n" << selected->getString() << "\n";
+    if(!promptSimNao("Tem certeza que quer excluir esse rastreador?")) return;
     
     programa.RemoverRastreador(selected->getId());
+    cout << "Rastreador removido com sucesso!\n";   
+
 }
 void promptCadastrarAlerta()
 {
@@ -452,7 +457,7 @@ Alerta* promptEscolherAlerta(Rastreador* & rastreadorRef, string prompt)
         if(rastreadorRef==nullptr) return nullptr;
 
         aSelected = promptEscolherAlerta(prompt, rastreadorRef);
-        if(rastreadorRef==nullptr) continue;
+        if(aSelected==nullptr) continue;
         break;
     }
     return aSelected;
@@ -470,6 +475,8 @@ void promptExibirAlerta()
     if(selected==nullptr) return;
 
     cout << "\n" << selected->getString() << "\n";
+
+    cout << "\n# Pressione qualquer tecla para continuar";
 }
 void promptAlterarAlerta()
 {
@@ -494,6 +501,9 @@ void promptRemoverAlerta()
     Rastreador* rastreador = nullptr;   
     Alerta* alerta = promptEscolherAlerta(rastreador, "Digite o subId do Alerta que deseja excluir: ");
     if(rastreador==nullptr||alerta==nullptr) return;
+
+    cout << "\n" << alerta->getString() << "\n";
+    if(!promptSimNao("Tem certeza que quer excluir essa alerta?")) return;
 
     rastreador->deleteAlerta(alerta->getSubid());
     cout << "Alerta removida com sucesso!\n";   
