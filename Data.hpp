@@ -46,4 +46,10 @@ public:
     {
         return std::to_string(dia) + " de " + getMesString() + " de " + std::to_string(ano);
     }
+    std::string getStringSalvar()
+    {
+        return std::to_string(dia)+"\n"
+         + std::to_string(mes)+"\n"
+        + std::to_string(ano);
+    }
 };

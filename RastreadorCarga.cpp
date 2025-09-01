@@ -1,4 +1,5 @@
 #include "RastreadorCarga.hpp"
+#include <string>
 
 std::string RastreadorCarga::getString()
 {
@@ -6,11 +7,13 @@ std::string RastreadorCarga::getString()
         ",\n    Remetente: " + remetente + ",\n    Destinatario: " + destinatario +
         (eFragil?",\n    É fragil":",\n    Não é fragil"); 
 }
-std::string RastreadorCarga::getStringJSON()
+std::string RastreadorCarga::getStringSalvar()
 {
-    return Rastreador::getStringJSON() + ", " + tipoDeCarga + 
-        ", " + remetente + ", " + destinatario +
-        (eFragil?", e Fragil":", nao e fragil"); 
+    return Rastreador::getStringSalvar()+"\n"
+     + tipoDeCarga+"\n"
+     + remetente+"\n"
+     + destinatario+"\n"
+     + std::to_string(eFragil);
 }
 RastreadorCarga::RastreadorCarga(unsigned int id, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
     EstadoDoRastreador estado, Data ativacao, std::string tipo, std::string remetente, std::string destinatario, bool eFragil)

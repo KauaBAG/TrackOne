@@ -18,6 +18,12 @@ public:
     {
         return "    Comunicação RFID com de frequencia " + std::to_string(frequencia) + " do tipo " + tipo;
     }
+    std::string getStringSalvar()
+    {
+        return std::to_string(TipoDeComunicacao::tipo)+"\n" 
+        + std::to_string(frequencia)+"\n"
+        + tipo;
+    }
     float getFrequencia() {return frequencia;}
     std::string getTipo() {return tipo;}
 

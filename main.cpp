@@ -674,7 +674,6 @@ int main() {
             break;
         case 4:
             programa.Salvar();
-            programa.JSON();
             cout << "Encerrando programa...\n";
             return 0; // Sair do programa
         default:

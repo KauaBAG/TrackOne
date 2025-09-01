@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TipoDeComunicacao.hpp"
+#include <string>
 
 enum Banda{_2G, _4G, _5G};
 
@@ -32,6 +33,12 @@ public:
     std::string getString()
     {
         return "    Comunicação GSM de banda " + toString(banda) + (fallback?" com fallback":" sem fallback");
+    }
+    std::string getStringSalvar()
+    {
+        return std::to_string(TipoDeComunicacao::tipo)+"\n" 
+        + toString(banda)+"\n"
+        + std::to_string(fallback);
     }
 
     Banda getBanda() {return banda;}

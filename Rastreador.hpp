@@ -39,7 +39,7 @@ public:
     
     // Métodos virtuais
     virtual std::string getString();
-    virtual std::string getStringJSON();
+    virtual std::string getStringSalvar();
     
     // Getters
     unsigned int getId();

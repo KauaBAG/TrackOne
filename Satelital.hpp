@@ -16,6 +16,11 @@ public:
     {
         return "    Comunicação satelital com id " + std::to_string(id);
     }
+    std::string getStringSalvar()
+    {
+        return std::to_string(TipoDeComunicacao::tipo)+"\n"
+        + std::to_string(id);
+    }
     unsigned int getId(){return id;}
     void setId(unsigned int id){this->id = id;}
 };

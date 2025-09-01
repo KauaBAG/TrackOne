@@ -39,7 +39,6 @@ public:
     int PesquisarAlerta(unsigned int id, unsigned int subid);
 
     void Salvar();
-    void JSON();
 
     void Carregar();      
 

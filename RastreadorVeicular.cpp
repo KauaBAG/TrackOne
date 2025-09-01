@@ -1,12 +1,17 @@
 #include "RastreadorVeicular.hpp"
+#include <string>
 
 std::string RastreadorVeicular::getString()
 {
     return Rastreador::getString() + ",\n    Tipo: " + tipo + ",\n    Marca do carro: "+marcaDoCarro +",\n    Modelo do carro: "+modeloDoCarro+(temCamera?",\n    Com":",\n    Sem")+" camera";
 }
-std::string RastreadorVeicular::getStringJSON()
+std::string RastreadorVeicular::getStringSalvar()
 {
-    return Rastreador::getStringJSON() + ", " + tipo + ", " + marcaDoCarro +", "+ modeloDoCarro+(temCamera?", com":", sem")+" camera";
+    return Rastreador::getStringSalvar()+"\n"
+     + tipo+"\n"
+     + marcaDoCarro+"\n"
+     + modeloDoCarro+"\n"
+     + std::to_string(temCamera);
 }
 RastreadorVeicular::RastreadorVeicular(unsigned int id, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
     EstadoDoRastreador estado, Data ativacao, std::string tipo, std::string marcaDoCarro, std::string modeloDoCarro, Placa placa, bool temCamera)

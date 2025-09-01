@@ -181,7 +181,7 @@ void Programa::Salvar()
 
     for (int i = 0; i < rastreadores.size(); i++)
     {
-        ans += rastreadores[i]->getString() + "\n";
+        ans += rastreadores[i]->getStringSalvar() + "\n";
     }
     
     Arquivo << ans << endl;
@@ -189,27 +189,9 @@ void Programa::Salvar()
     cout << "Arquivo Salvo em \"ArquivoSalvo.txt\"" << endl;
 }
 
-void Programa::JSON()
-{
-    fstream json("Arquivo.json", ios::out);
-
-    if(!json){
-        cout << "O aquivo não foi criado!" << endl;
-    }
-
-    string ans = "";
-
-    for (int i = 0; i < rastreadores.size(); i++)
-    {
-        ans += rastreadores[i]->getStringJSON() + "\n";
-    }
-    
-    json << ans << endl;
-    json.close();
-}
 Rastreador* CarregarRastreador(vector<std::string> desc)
 {
-    
+    return nullptr;
 }
 Alerta* CriarAlerta(std::string desc)
 {

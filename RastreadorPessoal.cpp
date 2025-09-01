@@ -4,9 +4,12 @@ std::string RastreadorPessoal::getString()
 {
     return Rastreador::getString() + ",\n    Nome: " + nome + ",\n    Telefone: " + telefone + ",\n    Documento " + documento;
 }
-std::string RastreadorPessoal::getStringJSON()
+std::string RastreadorPessoal::getStringSalvar()
 {
-    return Rastreador::getStringJSON() + ", " + nome + ", " + telefone + ", " + documento;
+    return Rastreador::getStringSalvar()+"\n"
+     + nome+"\n"
+     + telefone+"\n"
+     + documento;
 }
 RastreadorPessoal::RastreadorPessoal(unsigned int id, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
     EstadoDoRastreador estado, Data ativacao, std::string nome, std::string telefone, std::string documento)

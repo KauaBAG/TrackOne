@@ -2,6 +2,7 @@
 #include "Alerta.hpp"
 #include "Data.hpp"
 #include <memory>
+#include <string>
 #include "utils.hpp"
 
 std::string Rastreador::getString()
@@ -13,11 +14,16 @@ std::string Rastreador::getString()
         ", \n    Data de ativacao: " + ativacao.getString();
 }
 
-std::string Rastreador::getStringJSON()
+std::string Rastreador::getStringSalvar()
 {
-    return getTipoDeRastreador() +  ", " + std::to_string(id) +", " +
-    marca +", "+ modelo + ", "+comunicacao->getString()+", " +
-    getEstadoString() +", "+ ativacao.getString();
+    return "INICIO\n"
+     + std::to_string(tipoDeRastreador)+"\n"
+     + std::to_string(id)+"\n" 
+     + marca +"\n"
+     + modelo+"\n"
+     + comunicacao->getStringSalvar()+"\n"
+     + getEstadoString()+"\n"
+     + ativacao.getStringSalvar();
 }
 
 // PRINCIPAL MUDANÇA: Construtor modificado para usar shared_ptr

@@ -20,6 +20,7 @@ protected:
     }
 public:
     virtual std::string getString() = 0;
+    virtual std::string getStringSalvar() = 0;
     std::string getComunicacao() 
     {
         if(tipo==0) return "GSM";
