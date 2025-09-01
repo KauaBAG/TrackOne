@@ -43,7 +43,9 @@ public:
     int PesquisarAlerta(unsigned int id, unsigned int subid);
 
     void Salvar();
-    void JSON();      
+    void JSON();
+    void SalvarAlertas();
+    void JSONAlertas();      
 
     Alerta* getAlerta(int id, int subid);
 

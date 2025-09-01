@@ -67,6 +67,7 @@ public:
     DadosRastreador getDadosCarregarAlertas();
     std::string getStringCarregar();
     DadosRastreador getDadosCarregar();
+    std::string getStringCarregarAlertasJSON();
     
     // Setters
     void setId(unsigned int id);

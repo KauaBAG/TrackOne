@@ -60,6 +60,19 @@ std::string Rastreador::getStringCarregarAlertas() {
            std::to_string(dado.mesAtivacao) + "  " + std::to_string(dado.anoAtivacao);
 }
 
+std::string Rastreador::getStringCarregarAlertasJSON() {    
+    return "{\n  \"tipoDeRastreador\": " + std::to_string(tipoDeRastreador) + 
+           ",\n  \"id\": " + std::to_string(id) + 
+           ",\n  \"marca\": \"" + marca + "\"" +
+           ",\n  \"modelo\": \"" + modelo + "\"" +
+           ",\n  \"tipoDeComunicacao\": " + std::to_string(comunicacao->getTipo()) +
+           ",\n  \"estado\": " + std::to_string(estado) +
+           ",\n  \"diaAtivacao\": " + std::to_string(ativacao.getDia()) +
+           ",\n  \"mesAtivacao\": " + std::to_string(ativacao.getMes()) +
+           ",\n  \"anoAtivacao\": " + std::to_string(ativacao.getAno()) +
+           "\n}";
+}
+
 // PRINCIPAL MUDANÇA: Construtor modificado para usar shared_ptr
 Rastreador::Rastreador(int id, int tipo, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
     EstadoDoRastreador estado, Data ativacao)

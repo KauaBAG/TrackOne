@@ -205,6 +205,42 @@ void Programa::JSON()
     json << ans << endl;
     json.close();
 }
+void Programa::SalvarAlertas()
+{
+    fstream Arquivo("AlertasSalvos.txt", ios::out);
+
+    if(!Arquivo){
+        cout << "O aquivo não foi criado!" << endl;
+    }
+
+    string ans = "";
+
+    for (int i = 0; i < rastreadores.size(); i++)
+    {
+        ans += rastreadores[i]->getStringCarregarAlertas() + "\n";
+    }
+    
+    Arquivo << ans << endl;
+    Arquivo.close();
+    cout << "Arquivo Salvo em \"AlertasSalvos.txt\"" << endl;
+}
+void Programa::JSONAlertas(){
+    fstream json("Alertas.json", ios::out);
+
+    if(!json){
+        cout << "O aquivo não foi criado!" << endl;
+    }
+
+    string ans = "";
+
+    for (int i = 0; i < rastreadores.size(); i++)
+    {
+        ans += rastreadores[i]->getStringCarregarAlertasJSON() + "\n";
+    }
+    
+    json << ans << endl;
+    json.close();
+}
     
 Rastreador* Programa::getRastreador(int id) 
 {
