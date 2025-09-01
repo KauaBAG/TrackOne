@@ -255,21 +255,58 @@ Alerta* Programa::getAlerta(int id, int subid)
     return rast->getAlerta(subid);
 } 
 
-void Programa::CarregarRastreadores(){
-    for (auto &rastreador : rastreadores){
-        rastreador->getStringCarregar();
+void Programa::salvarEntradaRastreadores(){
+    fstream arquivo("EntradaRastreadores.txt", ios::out);
+    if(!arquivo){
+        cout << "O aquivo não foi criado!" << endl;
     }
+    string ans = "";
+    for (int i = 0; i < rastreadores.size(); i++)
+    {
+        ans += rastreadores[i]->getStringCarregar() + "\n";
+    }
+    arquivo << ans << endl;
+    arquivo.close();
+    cout << "Arquivo Salvo em \"EntradaRastreadores.txt\"" << endl;
+}
+void Programa::carregarEntradaRastreadores(){
+    fstream arquivo("EntradaRastreadores.txt", ios::in);
+    if(!arquivo){
+        cout << "O aquivo não foi criado!" << endl;
+    }
+    string linha;
+    while (getline(arquivo, linha)) {
+        cout << linha << endl;
+    }
+    arquivo.close();
+}
+void Programa::salvarEntradaAlertas(){
+    fstream arquivo("EntradaAlertas.txt", ios::in);
+    if(!arquivo){
+        cout << "O aquivo não foi criado!" << endl;
+    }
+    string ans = "";
+    for (int i = 0; i < rastreadores.size(); i++)
+    {
+        ans += rastreadores[i]->getStringCarregarAlertas() + "\n";
+}
+    arquivo << ans << endl;
+    arquivo.close();
+    cout << "Arquivo Salvo em \"EntradaAlertas.txt\"" << endl;
 }
 void Programa::CarregarAlertas(){
-    for (auto &rastreador : rastreadores){
-        rastreador->getStringCarregarAlertas();
+    fstream arquivo("EntradaAlertas.txt", ios::in);
+    if(!arquivo){
+        cout << "O aquivo não foi criado!" << endl;
     }
+    string linha;
+    while (getline(arquivo, linha)) {
+        cout << linha << endl;
+    }
+    arquivo.close();
 }
 Programa::~Programa()
 {
     for(Rastreador* rast : rastreadores) delete rast;
 }
-
 int Programa::getQuantidadeDeRastreadores() { return rastreadores.size(); }
-
-

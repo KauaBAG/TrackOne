@@ -46,6 +46,10 @@ public:
     void JSON();
     void SalvarAlertas();
     void JSONAlertas();      
+    void carregarEntradaRastreadores();
+    void carregarEntradaAlertas();
+    void salvarEntradaRastreadores();
+    void salvarEntradaAlertas();
 
     Alerta* getAlerta(int id, int subid);
 

@@ -95,7 +95,6 @@ Rastreador::~Rastreador() {
 }
 
 unsigned int Rastreador::getId() {return id;}
-
 unsigned int Rastreador::getQtdAlertas() {return alertas.size();}
 
 std::string Rastreador::getTipoDeRastreador() 
@@ -178,6 +177,8 @@ Alerta* Rastreador::getAlerta(int subid)
     if(alertaInd == -1) return nullptr;
     return alertas[alertaInd];
 }
+
+int Rastreador::getQtdAlertas() {return alertas.size();}
 
 std::vector<Alerta*> Rastreador::getAlertasComInicio(unsigned int subid)
 {
