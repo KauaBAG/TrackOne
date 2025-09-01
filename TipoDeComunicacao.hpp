@@ -29,5 +29,5 @@ public:
             " (Somente 0(GSM), 1(RFID), 2(Satelital) são aceitos)");
     }
     virtual ~TipoDeComunicacao() {}
+    short getTipo() {return tipo;}
 };
-

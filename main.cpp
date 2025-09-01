@@ -197,9 +197,11 @@ RastreadorVeicular* criarRastreadorVeicular(const RastreadorBase& base, TipoDeCo
     
     Placa placa(identificador, localDeEmissao, tipo);
 
+
     return new RastreadorVeicular(base.id, base.marca, base.modelo, comunicacao, 
                                base.estado, base.dataDeAtivacao, tipoDeCarro, 
                                marcaDoCarro, modeloDoCarro, placa, temCamera);
+
 }
 
 RastreadorCarga* criarRastreadorCarga(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {
@@ -218,6 +220,7 @@ RastreadorCarga* criarRastreadorCarga(const RastreadorBase& base, TipoDeComunica
     return new RastreadorCarga(base.id, base.marca, base.modelo, comunicacao, 
                         base.estado, base.dataDeAtivacao, tipoCarga, 
                         remetente, destinatario, fragil);
+
 }
 
 RastreadorPessoal* criarRastreadorPessoal(const RastreadorBase& base, TipoDeComunicacao* comunicacao) {

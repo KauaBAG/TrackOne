@@ -1,9 +1,11 @@
 #include "Programa.hpp"
 #include "Rastreador.hpp"
 #include "RastreadorVeicular.hpp"
+
 #include <iterator>
 #include <string>
 #include "utils.hpp"
+
 using namespace std;
 
 int Programa::InserirRastreador(Rastreador* rastreador)
@@ -135,7 +137,7 @@ int Programa::getQuantidadeDeAlertas(){
                 
                 for (auto &rastreador : rastreadores){
                     switch(escolha2){
-                        
+                       
                         case 1:
                             if (rastreador->getTipoDeRastreador() == "Rastreador de Carga"){
                                 cout << rastreador->getString();
@@ -216,10 +218,22 @@ Alerta* Programa::getAlerta(int id, int subid)
     if(rast == nullptr) return nullptr;
     return rast->getAlerta(subid);
 } 
+
+void Programa::CarregarRastreadores(){
+    for (auto &rastreador : rastreadores){
+        rastreador->getStringCarregar();
+    }
+}
+void Programa::CarregarAlertas(){
+    for (auto &rastreador : rastreadores){
+        rastreador->getStringCarregarAlertas();
+    }
+}
 Programa::~Programa()
 {
     for(Rastreador* rast : rastreadores) delete rast;
 }
 
 int Programa::getQuantidadeDeRastreadores() { return rastreadores.size(); }
+
 

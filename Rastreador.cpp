@@ -20,6 +20,46 @@ std::string Rastreador::getStringJSON()
     getEstadoString() +", "+ ativacao.getString();
 }
 
+DadosRastreador Rastreador::getDadosCarregar() {
+    DadosRastreador dados;
+    dados.tipoDeRastreador = tipoDeRastreador;
+    dados.id = id;
+    dados.marca = marca;
+    dados.modelo = modelo;
+    dados.tipoDeComunicacao = comunicacao->getTipo();
+    dados.estado = estado;
+    dados.diaAtivacao = ativacao.getDia();
+    dados.mesAtivacao = ativacao.getMes();
+    dados.anoAtivacao = ativacao.getAno();
+    return dados;
+}
+
+std::string Rastreador::getStringCarregar() {
+    DadosRastreador dados = getDadosCarregar();
+    return std::to_string(dados.tipoDeRastreador) + "  " + std::to_string(dados.id) + "  " +
+           dados.marca + "  " + dados.modelo + "  " + std::to_string(dados.tipoDeComunicacao) + "  " +
+           std::to_string(dados.estado) + "  " + std::to_string(dados.diaAtivacao) + "  " +
+           std::to_string(dados.mesAtivacao) + "  " + std::to_string(dados.anoAtivacao);
+}
+
+DadosAlerta Alerta::getDadosCarregarAlertas() {
+    DadosAlerta dado;
+    dado.subid = subid;
+    dado.tipo = tipo;
+    dado.dia = dataDeEmissao.getDia();
+    dado.mes = dataDeEmissao.getMes();
+    dado.ano = dataDeEmissao.getAno();
+    return dado;
+}
+
+std::string Rastreador::getStringCarregarAlertas() {
+    DadosRastreador dado = getDadosCarregarAlertas();
+    return std::to_string(dado.tipoDeRastreador) + "  " + std::to_string(dado.id) + "  " +
+           dado.marca + "  " + dado.modelo + "  " + std::to_string(dado.tipoDeComunicacao) + "  " +
+           std::to_string(dado.estado) + "  " + std::to_string(dado.diaAtivacao) + "  " +
+           std::to_string(dado.mesAtivacao) + "  " + std::to_string(dado.anoAtivacao);
+}
+
 // PRINCIPAL MUDANÇA: Construtor modificado para usar shared_ptr
 Rastreador::Rastreador(int id, int tipo, std::string marca, std::string modelo, TipoDeComunicacao* comunicacao,
     EstadoDoRastreador estado, Data ativacao)
@@ -124,6 +164,9 @@ Alerta* Rastreador::getAlerta(int subid)
     if(alertaInd == -1) return nullptr;
     return alertas[alertaInd];
 }
+
+int Rastreador::getQtdAlertas() {return alertas.size();}
+
 std::vector<Alerta*> Rastreador::getAlertasComInicio(unsigned int subid)
 {
     std::vector<Alerta*> found;
@@ -133,3 +176,4 @@ std::vector<Alerta*> Rastreador::getAlertasComInicio(unsigned int subid)
             found.push_back(alertas[i]);
     return found;
 }
+

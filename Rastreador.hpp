@@ -8,6 +8,18 @@
 
 enum EstadoDoRastreador {ATIVO, INATIVO, MANUTENCAO, BLOQUEADO};
 
+struct DadosRastreador {
+    int tipoDeRastreador;
+    int id;
+    std::string marca;
+    std::string modelo;
+    int tipoDeComunicacao; // ou outro tipo, conforme sua classe
+    int estado;
+    int diaAtivacao;
+    int mesAtivacao;
+    int anoAtivacao;
+};
+
 class Rastreador 
 {
 private:
@@ -51,6 +63,10 @@ public:
     TipoDeComunicacao* getTipoDeComunicacaoPtr();
     Data& getDataDeAtivacaoRef();
     std::string getEstadoString();
+    std::string getStringCarregarAlertas();
+    DadosRastreador getDadosCarregarAlertas();
+    std::string getStringCarregar();
+    DadosRastreador getDadosCarregar();
     
     // Setters
     void setId(unsigned int id);
@@ -65,5 +81,9 @@ public:
     std::string getAlertasList();
     void resetAlertas();
     Alerta* getAlerta(int subid);
+
+    int getQtdAlertas();
+
     std::vector<Alerta*> getAlertasComInicio(unsigned int subid);
+
 };
