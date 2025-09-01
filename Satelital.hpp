@@ -14,7 +14,7 @@ public:
     }
     std::string getString()
     {
-        return "Comunicação satelital com id " + std::to_string(id);
+        return "    Comunicação satelital com id " + std::to_string(id);
     }
     unsigned int getId(){return id;}
     void setId(unsigned int id){this->id = id;}

@@ -26,6 +26,9 @@ public:
     int InserirRastreador(Rastreador *rastreador);
     Rastreador* getRastreador(int id);
     string ListarRastreadores();
+
+    string ListarAlertas();
+  
     void AlterarRastreador(Rastreador *RastreadorAtualizado);
     bool RemoverRastreador(unsigned int id);
     void contadorTipo();
@@ -36,6 +39,7 @@ public:
     void ResetRastreadores();
     
     int PesquisarRastreador(unsigned int id);
+    vector<Rastreador*> getRastreadoresComInicio(unsigned int id);
     int PesquisarAlerta(unsigned int id, unsigned int subid);
 
     void Salvar();
@@ -44,4 +48,8 @@ public:
     Alerta* getAlerta(int id, int subid);
 
     virtual ~Programa();
+
+    int getQuantidadeDeRastreadores();
+    int getQuantidadeDeAlertas();
+
 };
