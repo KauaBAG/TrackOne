@@ -1,8 +1,12 @@
 #include "Programa.hpp"
+#include "Alerta.hpp"
 #include "Rastreador.hpp"
+#include "RastreadorPessoal.hpp"
 #include "RastreadorVeicular.hpp"
+#include <fstream>
 #include <iterator>
 #include <string>
+#include <vector>
 #include "utils.hpp"
 using namespace std;
 
@@ -202,6 +206,36 @@ void Programa::JSON()
     
     json << ans << endl;
     json.close();
+}
+Rastreador* CarregarRastreador(vector<std::string> desc)
+{
+    
+}
+Alerta* CriarAlerta(std::string desc)
+{
+    return nullptr;
+}
+void Programa::Carregar()
+{
+    fstream arquivo("ArquivoSalvo.txt", ios::in);
+    if(!arquivo)
+        return;
+    std::string linha; 
+    vector<std::string> rastCompleto(1); 
+    getline(arquivo,rastCompleto[0]);
+
+    while(getline(arquivo,linha))
+    {
+        if(linha == "Rastreador Veicular" || 
+            linha == "Rastreador de Carga" || 
+            linha == "Rastreador Pessoal")
+        {
+            CarregarRastreador(rastCompleto);
+            rastCompleto.clear();
+        }
+        rastCompleto.push_back(linha);
+    }
+    CarregarRastreador(rastCompleto);
 }
     
 Rastreador* Programa::getRastreador(int id) 
